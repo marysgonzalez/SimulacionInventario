@@ -9,14 +9,11 @@ package inventariosimulacion;
  *
  * @author Mary S. Gonzalez
  */
-public class InventarioSimulacion {
-
+public class Tabla {
     /**
-     * @param args the command line arguments
+     * Valor: correspondiente a la probabilidad
+     * Probabilidad: lista de probabilidad acumulada
      */
-    
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
-    
+    int valor;
+    double probabilidad;
 }
