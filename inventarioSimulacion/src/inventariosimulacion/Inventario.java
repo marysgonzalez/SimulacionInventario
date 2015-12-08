@@ -11,12 +11,13 @@ import java.util.*;
  * @author Mary S. Gonzalez
  */
 public class Inventario {
-    public double costoOrden, costoInventario, CostoconEspera, CostosinEspera;
+    private double costoOrden, costoInventario, CostoconEspera, CostosinEspera;
     private int inicial;
     private float promedio;
     private int puntoReorden;
     private double TcostoOrden, TcostoInventario, TCostoconEspera, TCostosinEspera;
     private List<Cliente> colaEspera;
+    private Orden orden;
 
     public Inventario(double costoOrden, double costoInventario, double CostoconEspera, double CostosinEspera, int inicial, float promedio, int puntoReorden) {
         this.costoOrden = costoOrden;

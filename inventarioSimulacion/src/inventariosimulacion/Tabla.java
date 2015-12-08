@@ -14,6 +14,28 @@ public class Tabla {
      * Valor: correspondiente a la probabilidad
      * Probabilidad: lista de probabilidad acumulada
      */
-    int valor;
-    double probabilidad;
+    private int valor;
+    private double probabilidad;
+
+    public Tabla(int valor, double probabilidad) {
+        this.valor = valor;
+        this.probabilidad = probabilidad;
+    }
+
+    public int getValor() {
+        return valor;
+    }
+
+    public void setValor(int valor) {
+        this.valor = valor;
+    }
+
+    public double getProbabilidad() {
+        return probabilidad;
+    }
+
+    public void setProbabilidad(double probabilidad) {
+        this.probabilidad = probabilidad;
+    }
+    
 }

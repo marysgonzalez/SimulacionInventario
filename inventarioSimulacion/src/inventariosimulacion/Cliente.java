@@ -15,9 +15,9 @@ public class Cliente {
      * tiempoEspera: dia de la simulacion hasta el cual el cliente espera un pedido.
      * satisfecho: cantidad satisfecha de la demanda, cuando espera el  cliente en la cola.
      */
-    int demanda;
-    int tiempoEspera;
-    int satisfecho; 
+    private int demanda;
+    private int tiempoEspera;
+    private int satisfecho; 
 
     public Cliente(int demanda, int tiempoEspera, int satisfecho) {
         this.demanda = demanda;

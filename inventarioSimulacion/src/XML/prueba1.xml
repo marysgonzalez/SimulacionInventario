@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<archivo>
+	<demanda>25-0.02</demanda>
+	<demanda>26-0.04</demanda>
+	<demanda>27-0.06</demanda>
+        <demanda>28-0.12</demanda>
+	<demanda>29-0.20</demanda>
+	<demanda>30-0.24</demanda>
+        <demanda>31-0.15</demanda>
+	<demanda>35-0.10</demanda>
+	<demanda>33-0.05</demanda>
+        <demanda>34-0.02</demanda>
+        <tiempoEntrega>1-0.2</tiempoEntrega>
+	<tiempoEntrega>2-0.3</tiempoEntrega>
+	<tiempoEntrega>3-0.25</tiempoEntrega>
+        <tiempoEntrega>4-0.25</tiempoEntrega>
+        <tiempoEspera>0-0.4</tiempoEspera>
+	<tiempoEspera>1-0.2</tiempoEspera>
+	<tiempoEspera>2-0.15</tiempoEspera>
+        <tiempoEspera>3-0.15</tiempoEspera>
+        <tiempoEspera>4-0.1</tiempoEspera>
+</archivo>
