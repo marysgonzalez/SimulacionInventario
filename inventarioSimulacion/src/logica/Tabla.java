@@ -17,6 +17,10 @@ public class Tabla {
     private int valor;
     private double probabilidad;
 
+    public Tabla() {
+        this.valor = 0;
+        this.probabilidad = 0;
+    }
     public Tabla(int valor, double probabilidad) {
         this.valor = valor;
         this.probabilidad = probabilidad;

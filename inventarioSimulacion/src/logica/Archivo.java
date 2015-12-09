@@ -14,9 +14,59 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement
 public class Archivo {
 
+    private double invInicial;
     private List<String> demanda;
     private List<String> tiempoEntrega;
     private List<String> tiempoEspera;
+    private double costoInv;
+    private double costoOrden;
+    private double costoEspera;
+    private double costoSinEspera;
+
+    public double getInvInicial() {
+        return invInicial;
+    }
+
+    @XmlElement(name = "invInicial") 
+    public void setInvInicial(double invInicial) {
+        this.invInicial = invInicial;
+    }
+
+    public double getCostoInv() {
+        return costoInv;
+    }
+
+    @XmlElement(name = "costoInventario") 
+    public void setCostoInv(double costoInv) {
+        this.costoInv = costoInv;
+    }
+
+    public double getCostoOrden() {
+        return costoOrden;
+    }
+
+    @XmlElement(name = "costoOrden") 
+    public void setCostoOrden(double costoOrden) {
+        this.costoOrden = costoOrden;
+    }
+
+    public double getCostoEspera() {
+        return costoEspera;
+    }
+
+    @XmlElement(name = "costoEspera") 
+    public void setCostoEspera(double costoEspera) {
+        this.costoEspera = costoEspera;
+    }
+
+    public double getCostoSinEspera() {
+        return costoSinEspera;
+    }
+
+    @XmlElement(name = "costoSinEspera") 
+    public void setCostoSinEspera(double costoSinEspera) {
+        this.costoSinEspera = costoSinEspera;
+    }
 
     public List<String> getDemanda() {
         return demanda;
@@ -45,5 +95,27 @@ public class Archivo {
         this.tiempoEspera = tiempoEspera;
     }
 
+    /**
+     * 
+     * @param lista
+     * @return 
+     */
+    public List<String> calcularProbAcum(List<String> lista){
+        double prob = 0;
+        for (int i=0; i< lista.size(); i++){
+            prob += Double.parseDouble(lista.get(i).split("-")[1]);    
+            lista.set(i, lista.get(i).split("-")[0]+"-"+prob);
+        }
+        return lista;
+    }
     
+    public void asignarTabla(List<String> lista, List<Tabla> tDemanda){
+        
+        for (int i=0; i<lista.size(); i++){
+            Tabla tabla = new Tabla();
+            tabla.setValor(Integer.parseInt(lista.get(i).split("-")[0]));
+            tabla.setProbabilidad(Double.parseDouble(lista.get(i).split("-")[1]));
+            tDemanda.add(tabla);
+        }
+    }
 }
