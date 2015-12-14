@@ -9,7 +9,7 @@ package logica;
  *
  * @author Mary S. Gonzalez
  */
-public class Cliente {
+public class Cliente implements Comparable <Cliente>{
     /**
      * demanda: cantidad de un item, generado de la tabla de demanda
      * tiempoEspera: dia de la simulacion hasta el cual el cliente espera un pedido.
@@ -19,6 +19,12 @@ public class Cliente {
     private int tiempoEspera;
     private int satisfecho; 
 
+    /**
+     * 
+     * @param demanda
+     * @param tiempoEspera
+     * @param satisfecho 
+     */
     public Cliente(int demanda, int tiempoEspera, int satisfecho) {
         this.demanda = demanda;
         this.tiempoEspera = tiempoEspera;
@@ -47,6 +53,11 @@ public class Cliente {
 
     public void setSatisfecho(int satisfecho) {
         this.satisfecho = satisfecho;
+    }
+
+    @Override
+    public int compareTo(Cliente t) {
+        return Integer.compare(demanda, t.getDemanda());
     }
     
 }

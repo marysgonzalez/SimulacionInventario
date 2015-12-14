@@ -5,6 +5,8 @@
  */
 package logica;
 
+import static logica.Main.diaSimulacion;
+
 /**
  *
  * @author Mary S. Gonzalez
@@ -18,7 +20,12 @@ public class Orden {
     private int tiempoEntrega;
     private int cantidad;
     private int numero;
-
+    
+    public Orden() {
+        this.tiempoEntrega = 0;
+        this.cantidad = 0;
+        this.numero = 0;
+    }
     public Orden(int tiempoEntrega, int cantidad, int numero) {
         this.tiempoEntrega = tiempoEntrega;
         this.cantidad = cantidad;

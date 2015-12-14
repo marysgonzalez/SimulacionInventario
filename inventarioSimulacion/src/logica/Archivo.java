@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package logica;
+import java.text.DecimalFormat;
 import java.util.*;
 import javax.xml.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement
 public class Archivo {
 
-    private double invInicial;
+    private int invInicial;
     private List<String> demanda;
     private List<String> tiempoEntrega;
     private List<String> tiempoEspera;
@@ -23,12 +24,12 @@ public class Archivo {
     private double costoEspera;
     private double costoSinEspera;
 
-    public double getInvInicial() {
+    public int getInvInicial() {
         return invInicial;
     }
 
     @XmlElement(name = "invInicial") 
-    public void setInvInicial(double invInicial) {
+    public void setInvInicial(int invInicial) {
         this.invInicial = invInicial;
     }
 
@@ -110,11 +111,11 @@ public class Archivo {
     }
     
     public void asignarTabla(List<String> lista, List<Tabla> tDemanda){
-        
+        DecimalFormat decimales = new  DecimalFormat("0.000");
         for (int i=0; i<lista.size(); i++){
             Tabla tabla = new Tabla();
             tabla.setValor(Integer.parseInt(lista.get(i).split("-")[0]));
-            tabla.setProbabilidad(Double.parseDouble(lista.get(i).split("-")[1]));
+            tabla.setProbabilidad(Double.parseDouble(decimales.format(Double.parseDouble(lista.get(i).split("-")[1]))));
             tDemanda.add(tabla);
         }
     }
