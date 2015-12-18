@@ -46,35 +46,37 @@ public class Tabla {
     }
     /**
      * 
-     * @param lista lista de demandas, tiempo de entrega o espera
+     * @param lista de demanda, entrega o espera
+     * @param diaSimulacion
+     * @param tipo si es tabla de 1:demanda, 2:entrega o 3:espera
+     * @return 
      */
-    public int UbicarEnTabla(List<Tabla> lista){
+    public int UbicarEnTabla(List<Tabla> lista, int tipo){
         Random numeroAleatorio;
         double num;
         DecimalFormat decimales;  
         numeroAleatorio = new Random();
         decimales = new  DecimalFormat("0.000");
         num = Double.parseDouble(decimales.format(numeroAleatorio.nextDouble()));
-        System.out.println("Numero Aleatorio: "+num);
         //Recorrer la lista de probabilidades acumuladas
-//        num = 0.24;
+//        num = 0.995;
+        System.out.println("Numero Aleatorio: "+num);
         for(int i=0; i<lista.size(); i++){
             //El primer elemento
             if(i==0 && num>=0 && num<lista.get(i).getProbabilidad()){
 //                System.out.println("Iteracion:"+i);
-                System.out.println("Probabilidad:"+lista.get(i).getProbabilidad());
-                System.out.println("Valor:"+lista.get(i).getValor());
+//                System.out.println("Probabilidad:"+lista.get(i).getProbabilidad());
+//                System.out.println("Valor:"+lista.get(i).getValor());
                 return lista.get(i).getValor();
             }else if(i+1<lista.size() && lista.get(i).getProbabilidad()>=num && num<lista.get(i+1).getProbabilidad()){
 //                System.out.println("Iteracion:"+i);
-                System.out.println("Probabilidad:"+lista.get(i).getProbabilidad());
-                System.out.println("Valor:"+lista.get(i).getValor());  
+//                System.out.println("Probabilidad:"+lista.get(i).getProbabilidad());
+//                System.out.println("Valor:"+lista.get(i).getValor());  
                 return lista.get(i).getValor();              
-            }else if(i+1==lista.size() && lista.get(i-1).getProbabilidad()>=num && num<lista.get(i).getProbabilidad()){
-                //El ultimo elemento
+            }else if(i+1==lista.size() && lista.get(i).getProbabilidad()>=num){
 //                System.out.println("Iteracion:"+i);
-                System.out.println("Probabilidad:"+lista.get(i).getProbabilidad());
-                System.out.println("Valor:"+lista.get(i).getValor()); 
+//                System.out.println("Probabilidad:"+lista.get(i).getProbabilidad());
+//                System.out.println("Valor:"+lista.get(i).getValor()); 
                 return lista.get(i).getValor();
             }
         }
