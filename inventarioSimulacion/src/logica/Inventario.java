@@ -5,6 +5,7 @@
  */
 package logica;
 import java.util.*;
+import static logica.Main.*;
 
 /**
  *
@@ -171,10 +172,6 @@ public class Inventario {
         int Le = 0 , n = 0;
         to = (double)q/(demanda*365);
         L = ((double)dia/365);
-//        System.out.println("to:"+to);
-//        System.out.println("L:"+L);
-//        System.out.println("D:"+demanda);
-//        System.out.println("q:"+q);
         if(L < to){
             return ((int)Math.round(L*(demanda*365)));
         }else{
@@ -193,19 +190,19 @@ public class Inventario {
             System.out.println("Clientes en cola:"+ this.colaEspera.size());
             for(int i=0; i<this.colaEspera.size();i++){
                 //Si aun no se cumple el dia maximo de espera del cliente
-                if(diaSimulacion <= this.colaEspera.get(i).getTiempoEspera()){
+                if(this.colaEspera.get(i).getTiempoEspera() >= diaSimulacion){
                     System.out.println("Se atendio al cliente #"+i);
                     System.out.println("Demanda del cliente:"+ this.colaEspera.get(i).getDemanda());
                     //Se puede satisfacer la demanda del cliente con el inventario actual?
-                    if(this.inicial >= this.colaEspera.get(i).getDemanda()){
+                    if(this.getInicial() >= this.colaEspera.get(i).getDemanda()){
                         System.out.println("Cliente satisfecho:"+this.colaEspera.get(i).getDemanda());
                         this.colaEspera.get(i).setSatisfecho(this.colaEspera.get(i).getDemanda());
                         this.setInicial(this.getInicial() - this.colaEspera.get(i).getDemanda());
-                        //Calcular costo con espera
                         this.setSatisfecho(this.colaEspera.get(i).getSatisfecho());
-//                        this.TCostoconEspera(this.colaEspera.get(i).getSatisfecho());
                         //Quitar cliente de la cola
                         this.colaEspera.remove(i);
+                        i--;
+                        System.out.println("Tamaño de la cola:"+colaEspera.size());
                     }else{
                         //Vender todo lo que queda
                          System.out.println("No fue suficiente.");
@@ -219,56 +216,92 @@ public class Inventario {
                     this.setInsatisfecho(this.colaEspera.get(i).getDemanda());
 //                    this.TCostosinEspera(this.colaEspera.get(i).getDemanda());
                     this.colaEspera.remove(i);
+                     System.out.println("Tamaño de la cola:"+colaEspera.size());
                 }
             }
+            System.out.println("-------------------");
         }
+         
     }
     /**
      * 
      * @param diaSimulacion dia actual de la simulacion
      * @param tDemanda tabla de la demanda
      * @param tEspera  tabla de la espera del cliente
+     * @param opcion 1:lista de numeros aleatorios del archivo 0: numero aleatorio de la funcion
      */
-    public void ActualizarInventario(int diaSimulacion, List<Tabla>tDemanda, List<Tabla>tEspera){
+    public void ActualizarInventario(int diaSimulacion, List<Tabla>tDemanda, List<Tabla>tEspera, int opcion){
         int InvFinal = 0;
         int demanda = 0, diaEspera = 0;
         Cliente clienteNuevo;
-        //Generar numero aleatorio de la demanda y obtener el valor
-        demanda = tDemanda.get(0).UbicarEnTabla(tDemanda, 1);
+        double aleatorio;
+         if(opcion==1){
+            aleatorio = this.GenerarNumeroAleatorio(1, diaSimulacion-1);
+            demanda = tDemanda.get(0).UbicarEnTabla(tDemanda, 1, aleatorio);
+        }else{
+            demanda = tDemanda.get(0).UbicarEnTabla(tDemanda, 0, 0);
+        }
         System.out.println("Demanda:"+demanda);
+ 
         if(this.getInicial()>0){
             this.VerificarColaClientes(diaSimulacion);
             //Si se puede satisfacer la demanda del cliente
             if(demanda <= this.getInicial()){
                 InvFinal = this.getInicial() - demanda;
-                this.setPromedio((this.getInicial()+InvFinal)/2);
-                System.out.println("Inventario Promedio:"+(this.getInicial()+InvFinal)/2);
+                this.setPromedio(Math.round((this.getInicial()+InvFinal)/2));
+                System.out.println("Inventario Promedio:"+ Math.round((this.getInicial()+InvFinal)/2));
                 this.setInicial(InvFinal);
             }else{
-                System.out.println("Inventario Promedio:"+(this.getInicial()+InvFinal)/2);
+                this.setPromedio(Math.round((this.getInicial())/2));
+                System.out.println("Inventario Promedio:"+ Math.round(this.getInicial()/2));
                 //Generar espera para el cliente
-                this.GenerarEspera(tEspera, diaSimulacion, demanda);               
+                if(opcion==1){
+                    this.GenerarEspera(tEspera, diaSimulacion, demanda, 1);
+                }else{
+                    this.GenerarEspera(tEspera, diaSimulacion, demanda, 0);
+                }         
             }
         }else{
             //Generar espera para el cliente
-                System.out.println("Inventario Promedio:"+(this.getInicial()+InvFinal)/2);
-                this.GenerarEspera(tEspera, diaSimulacion, demanda);
+            this.setPromedio(Math.round((this.getInicial())/2));
+            System.out.println("Inventario Promedio:"+ (this.getInicial()/2));
+            if(opcion==1){
+                this.GenerarEspera(tEspera, diaSimulacion, demanda, 1);
+            }else{
+                this.GenerarEspera(tEspera, diaSimulacion, demanda, 0);
+            }
         }
          System.out.println("Inventario Final:"+this.getInicial());
     }
+    /**
+     * 
+     * @param diaSimulacion dia actual de la simulacion
+     */
     public void VerificarOrden(int diaSimulacion){
         if(this.getOrden().getTiempoEntrega()==diaSimulacion){
             System.out.println("Llego orden:"+this.getOrden().getNumero());
-            this.setInicial(this.getOrden().getCantidad());
+            this.setInicial(this.getInicial()+this.getOrden().getCantidad());
             this.getOrden().setTiempoEntrega(0);
         }
     }
-    public void GenerarOrden(int diaSimulacion, List<Tabla> tEntrega){
+    /**
+     * 
+     * @param diaSimulacion dia actual de la simulacion
+     * @param tEntrega tabla de entrega
+     * @param opcion 1:ejecucion prueba 0: ejecucion normal
+     */
+    public void GenerarOrden(int diaSimulacion, List<Tabla> tEntrega,int opcion){
         int numero = this.getOrden().getNumero();
         int diaEntrega = 0;
+        double aleatorio;
         if(this.getInicial()< this.getPuntoReorden() && this.getOrden().getTiempoEntrega()==0){
             this.getOrden().setNumero(numero+1);
-            diaEntrega = tEntrega.get(0).UbicarEnTabla(tEntrega, 2);
+            if(opcion==1){
+                aleatorio = this.GenerarNumeroAleatorio(3,0);
+                diaEntrega = tEntrega.get(0).UbicarEnTabla(tEntrega, 3, aleatorio);
+            }else{
+                diaEntrega = tEntrega.get(0).UbicarEnTabla(tEntrega, opcion, 0);
+            }  
             System.out.println("Dia para la orden:"+diaEntrega);
             this.getOrden().setTiempoEntrega(diaSimulacion+diaEntrega+1);
             this.TCostoOrden();
@@ -276,17 +309,30 @@ public class Inventario {
         }
     }
     
-    public void GenerarEspera(List<Tabla> tEspera, int diaSimulacion, int demanda){
+    /**
+     * 
+     * @param tEspera tabla de espera
+     * @param diaSimulacion dia actual de la simulacion
+     * @param demanda demanda restante del cliente
+     * @param opcion 1: ejecucion de prueba 0: ejecucion normal
+     */
+    public void GenerarEspera(List<Tabla> tEspera, int diaSimulacion, int demanda,int opcion){
         Cliente clienteNuevo;
         int InvFinal, diaEspera;
-        diaEspera = tEspera.get(0).UbicarEnTabla(tEspera,3);
+        double aleatorio;
+        if(opcion == 1){
+            aleatorio = this.GenerarNumeroAleatorio(2,0);
+            diaEspera = tEspera.get(0).UbicarEnTabla(tEspera, 2, aleatorio);
+        }else{
+            diaEspera = tEspera.get(0).UbicarEnTabla(tEspera, 0, 0);
+        }
         InvFinal = demanda-this.getInicial();
         if(diaEspera!=0){
             //Se satisface lo que se puede
             clienteNuevo = new Cliente(InvFinal,0,0);
             //Se acabo el inventario
             this.setInicial(0);
-            clienteNuevo.setTiempoEspera(diaSimulacion+diaEspera);
+            clienteNuevo.setTiempoEspera(diaSimulacion+diaEspera+1);
             this.colaEspera.add(clienteNuevo);
             System.out.println("Dia para el cliente:"+diaEspera);
             System.out.println("El cliente espera:"+clienteNuevo.getTiempoEspera());
@@ -298,5 +344,30 @@ public class Inventario {
             this.setInsatisfecho(InvFinal);
         }
         
+    }
+    /**
+     * 
+     * @param opcion 1: demanda 2: espera 3:entrega
+     * @param index dia actual
+     * @return 
+     */
+    public double GenerarNumeroAleatorio(int opcion, int index){
+        double numero;
+        switch(opcion){
+            case 1:
+                return alDemanda.get(index);
+            case 2:
+                for(int i=0; i<alEspera.size();i++){
+                    if(alEspera.get(i)!=0.0){
+                        numero = alEspera.get(i);
+                        alEspera.set(i,0.0);
+                        return numero;
+                    }
+                }
+                break;
+            case 3:
+                return alEntrega.get(this.getOrden().getNumero()-1);
+        }
+        return 0;
     }
 }

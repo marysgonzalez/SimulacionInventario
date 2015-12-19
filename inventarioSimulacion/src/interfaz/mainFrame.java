@@ -5,17 +5,57 @@
  */
 package interfaz;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author Mary S. Gonzalez
  */
 public class mainFrame extends javax.swing.JFrame {
+    private JPanel contentPane;
+    private String direccion;
 
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
     /**
      * Creates new form mainFrame
      */
     public mainFrame() {
         initComponents();
+        //Parametros asociados a la ventana
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 450, 300);
+        contentPane = new JPanel();
+        contentPane.setLayout(null);
+        setContentPane(contentPane);
+
+        //Creamos el objeto JFileChooser
+        JFileChooser fc=new JFileChooser();
+
+        //Abrimos la ventana, guardamos la opcion seleccionada por el usuario
+        int seleccion=fc.showOpenDialog(contentPane);
+
+        //Si el usuario, pincha en aceptar
+        if(seleccion==JFileChooser.APPROVE_OPTION){
+
+            //Seleccionamos el fichero
+            File fichero=fc.getSelectedFile();
+
+            //Ecribe la ruta del fichero seleccionado en el campo de texto
+            this.setDireccion(fichero.getAbsolutePath());
+        }
+         
     }
 
     /**
@@ -33,11 +73,11 @@ public class mainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 635, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 465, Short.MAX_VALUE)
         );
 
         pack();

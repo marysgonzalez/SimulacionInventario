@@ -47,39 +47,34 @@ public class Tabla {
     /**
      * 
      * @param lista de demanda, entrega o espera
-     * @param diaSimulacion
-     * @param tipo si es tabla de 1:demanda, 2:entrega o 3:espera
+     * @param opcion 0: ejecucion normal 1:ejecucion de prueba
+     * @param aleatorio numero aleatorio del archivo
      * @return 
      */
-    public int UbicarEnTabla(List<Tabla> lista, int tipo){
+    public int UbicarEnTabla(List<Tabla> lista, int opcion, double aleatorio){
         Random numeroAleatorio;
         double num;
         DecimalFormat decimales;  
         numeroAleatorio = new Random();
         decimales = new  DecimalFormat("0.000");
-        num = Double.parseDouble(decimales.format(numeroAleatorio.nextDouble()));
+        if(opcion==0){
+            num = Double.parseDouble(decimales.format(numeroAleatorio.nextDouble()));
+        }else{
+            num = aleatorio;
+        }
         //Recorrer la lista de probabilidades acumuladas
-//        num = 0.995;
         System.out.println("Numero Aleatorio: "+num);
         for(int i=0; i<lista.size(); i++){
             //El primer elemento
             if(i==0 && num>=0 && num<lista.get(i).getProbabilidad()){
-//                System.out.println("Iteracion:"+i);
-//                System.out.println("Probabilidad:"+lista.get(i).getProbabilidad());
-//                System.out.println("Valor:"+lista.get(i).getValor());
                 return lista.get(i).getValor();
             }else if(i+1<lista.size() && lista.get(i).getProbabilidad()>=num && num<lista.get(i+1).getProbabilidad()){
-//                System.out.println("Iteracion:"+i);
-//                System.out.println("Probabilidad:"+lista.get(i).getProbabilidad());
-//                System.out.println("Valor:"+lista.get(i).getValor());  
                 return lista.get(i).getValor();              
             }else if(i+1==lista.size() && lista.get(i).getProbabilidad()>=num){
-//                System.out.println("Iteracion:"+i);
-//                System.out.println("Probabilidad:"+lista.get(i).getProbabilidad());
-//                System.out.println("Valor:"+lista.get(i).getValor()); 
                 return lista.get(i).getValor();
             }
         }
         return 0;
     }
+
 }

@@ -19,6 +19,9 @@ public class Archivo {
     private List<String> demanda;
     private List<String> tiempoEntrega;
     private List<String> tiempoEspera;
+    private List<Double> nroAleatorioDemanda;
+    private List<Double> nroAleatorioEspera;
+    private List<Double> nroAleatorioEntrega;
     private double costoInv;
     private double costoOrden;
     private double costoEspera;
@@ -27,6 +30,31 @@ public class Archivo {
     public int getInvInicial() {
         return invInicial;
     }
+
+    public List<Double> getNroAleatorioDemanda() {
+        return nroAleatorioDemanda;
+    }
+    @XmlElement(name = "nroAleatorioDemanda")
+    public void setNroAleatorioDemanda(List<Double> nroAleatorioDemanda) {
+        this.nroAleatorioDemanda = nroAleatorioDemanda;
+    }
+
+    public List<Double> getNroAleatorioEspera() {
+        return nroAleatorioEspera;
+    }
+    @XmlElement(name = "nroAleatorioEspera")
+    public void setNroAleatorioEspera(List<Double> nroAleatorioEspera) {
+        this.nroAleatorioEspera = nroAleatorioEspera;
+    }
+
+    public List<Double> getNroAleatorioEntrega() {
+        return nroAleatorioEntrega;
+    }
+    @XmlElement(name = "nroAleatorioEntrega") 
+    public void setNroAleatorioEntrega(List<Double> nroAleatorioEntrega) {
+        this.nroAleatorioEntrega = nroAleatorioEntrega;
+    }
+
 
     @XmlElement(name = "invInicial") 
     public void setInvInicial(int invInicial) {
