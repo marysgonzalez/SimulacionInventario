@@ -24,7 +24,7 @@ public class Main {
      * @param args the command line arguments
      */
     
-    static final int diaSimulacion=15;
+    static int diaSimulacion=365;
     public static List<Double> alDemanda = new ArrayList<Double>();
     public static List<Double> alEspera = new ArrayList<Double>();
     public static List<Double> alEntrega = new ArrayList<Double>();
@@ -67,6 +67,7 @@ public class Main {
 
             if(alDemanda!=null && alEntrega!=null && alEspera!=null){
                 System.out.println("Archivo de prueba");
+                diaSimulacion = 15;
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
                 MinQ = 100;
                 MinPR = 75;
