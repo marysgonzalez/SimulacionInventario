@@ -7,12 +7,20 @@ package logica;
 
 import interfaz.mainFrame;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import jxl.Workbook;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
 
 /**
  *
@@ -29,7 +37,7 @@ public class Main {
     public static List<Double> alEspera = new ArrayList<Double>();
     public static List<Double> alEntrega = new ArrayList<Double>();
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws WriteException {
         mainFrame interfaz;
         Archivo objeto = null;
         List<Tabla> tDemanda = null, tEntrega = null, tEspera = null;
@@ -38,7 +46,7 @@ public class Main {
         tEspera = new ArrayList <Tabla>();
         
         int MinQ = 0, MaxQ = 0;
-        int MinPR = 0, MaxPR =0;
+        int MinPR = 0, MaxPR = 0;
         
         try {    
             interfaz = new mainFrame();
@@ -101,13 +109,39 @@ public class Main {
                 // El costo de escasez (s), se calcula: la demanda mas peque;a con el s mas grande, y viceversa
                 MinQ = inventario.calcularCantidadOrden(tDemanda.get(0).getValor(), inventario.getCostosinEspera());
                 MaxQ =  inventario.calcularCantidadOrden(tDemanda.get(tDemanda.size()-1).getValor(), inventario.getCostoconEspera());
-
+                
                 System.out.println("Intervalo de Q:"+ MinQ +"-"+MaxQ);
 
                 MinPR = inventario.calcularPuntoReorden(tEntrega.get(0).getValor(), tDemanda.get(0).getValor(), MinQ);
                 MaxPR = inventario.calcularPuntoReorden(tEntrega.get(tEntrega.size()-1).getValor(), tDemanda.get(tDemanda.size()-1).getValor(), MaxQ);
                 System.out.println("Intervalo de R:"+ MinPR +"-"+MaxPR);
 
+                //Combinaciones Q y R
+                List<Double> listaCostos=null;
+                //son 365
+                int diaSimulacion = 3; 
+                for (int i= MinQ; i<=MaxQ; i++){
+                    for (int j = MinPR; j<=MaxPR; j++){
+                        listaCostos = new ArrayList<Double>();
+                    }
+                } 
+                //Para saber el indice del minimo costo de la lista
+              //  int minIndice = listaCostos.indexOf(Collections.min(listaCostos));
+                
+                //Para mostrar en Excel
+                File archivo = new File("C:\\Users\\Vicky\\Desktop\\totalCosto.xls"); 
+                WritableWorkbook excel;
+                try {
+                    excel = Workbook.createWorkbook(archivo);
+                    WritableSheet hojaTrabajo = excel.createSheet("TotalCostos", 0);
+                    Label input = new Label(0,0,"Dato 1");
+                    hojaTrabajo.addCell(input);
+                    excel.write();
+                    excel.close();
+                } catch (IOException ex) {
+                    System.out.println("Error al crear el archivo Excel: "+ex);
+                }
+                
                 /*Alguna combinacion de q y R*/
                 inventario.getOrden().setCantidad(MinQ);
                 inventario.setPuntoReorden(MinPR);

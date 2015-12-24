@@ -6,6 +6,7 @@
 package logica;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
 
 /**
@@ -57,8 +58,10 @@ public class Tabla {
         DecimalFormat decimales;  
         numeroAleatorio = new Random();
         decimales = new  DecimalFormat("0.000");
+        NumberFormat deci = NumberFormat.getNumberInstance(Locale.UK);
+        deci.setMaximumFractionDigits(3);
         if(opcion==0){
-            num = Double.parseDouble(decimales.format(numeroAleatorio.nextDouble()));
+            num = Double.parseDouble(deci.format(numeroAleatorio.nextDouble()));
         }else{
             num = aleatorio;
         }

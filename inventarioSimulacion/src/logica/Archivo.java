@@ -5,6 +5,7 @@
  */
 package logica;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
 import javax.xml.bind.annotation.*;
 
@@ -140,10 +141,12 @@ public class Archivo {
     
     public void asignarTabla(List<String> lista, List<Tabla> tDemanda){
         DecimalFormat decimales = new  DecimalFormat("0.000");
+        NumberFormat deci = NumberFormat.getNumberInstance(Locale.UK);
+        deci.setMaximumFractionDigits(3);
         for (int i=0; i<lista.size(); i++){
             Tabla tabla = new Tabla();
             tabla.setValor(Integer.parseInt(lista.get(i).split("-")[0]));
-            tabla.setProbabilidad(Double.parseDouble(decimales.format(Double.parseDouble(lista.get(i).split("-")[1]))));
+            tabla.setProbabilidad(Double.parseDouble(deci.format(Double.parseDouble(lista.get(i).split("-")[1]))));
             tDemanda.add(tabla);
         }
     }
