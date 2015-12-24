@@ -119,43 +119,51 @@ public class Main {
                 System.out.println("Intervalo de R:"+ MinPR +"-"+MaxPR);
                 
                 //Para mostrar en Excel
-                File archivo = new File("C:\\Users\\Vicky\\Desktop\\totalCosto.xls"); 
-                WritableWorkbook excel;
-                try {
-                    excel = Workbook.createWorkbook(archivo);
-                    WritableSheet hojaTrabajo = excel.createSheet("TotalCostos", 0);
-                    Label input = new Label(0,0,"Dato 1");
-                    hojaTrabajo.addCell(input);
-                    excel.write();
-                    excel.close();
-                } catch (IOException ex) {
-                    System.out.println("Error al crear el archivo Excel: "+ex);
-                }
-                
+//                File archivo = new File("C:\\Users\\Vicky\\Desktop\\totalCosto.xls"); 
+//                WritableWorkbook excel;
+//                try {
+//                    excel = Workbook.createWorkbook(archivo);
+//                    WritableSheet hojaTrabajo = excel.createSheet("TotalCostos", 0);
+//                    Label input = new Label(0,0,"Dato 1");
+//                    hojaTrabajo.addCell(input);
+//                    excel.write();
+//                    excel.close();
+//                } catch (IOException ex) {
+//                    System.out.println("Error al crear el archivo Excel: "+ex);
+//                }
+//                
                 //Combinaciones Q y R
-                List<Double> listaCostos=null;
-
+                List<Double> listaCostos= new ArrayList<Double>();
+                Double tCosto = 0.0;
                 for (int i= MinQ; i<=MaxQ; i++){
-                    
+                    //Asignar q
+                    inventario.getOrden().setCantidad(i);
                     for (int j = MinPR; j<=MaxPR; j++){
-                        listaCostos = new ArrayList<Double>();
-                        inventario.getOrden().setCantidad(i);
+                        //Asignar R
                         inventario.setPuntoReorden(j);
+                        //Simulacion de 365 dias
                         for(int k=1; k<= diaSimulacion;k++){
-                            System.out.println("Dia Simulacion:"+ k); 
+                            System.out.println("Dia Simulacion:"+ i);                
                             //LLego orden?
-                            inventario.VerificarOrden(k);
+                            inventario.VerificarOrden(i);
+                            //Ordenar clientes
+                            if(inventario.getColaEspera()!=null){
+                                Collections.sort(inventario.getColaEspera());
+                            }
                             System.out.println("Inv Inicial:"+inventario.getInicial());
-                            inventario.ActualizarInventario(k, tDemanda, tEspera, 1);
-                            inventario.GenerarOrden(k, tEntrega, 1);
+                            inventario.ActualizarInventario(i, tDemanda, tEspera,0);
+                            inventario.GenerarOrden(i, tEntrega,0);
                             System.out.println("-------------------");
                         }
-                        Double tCosto = inventario.TCostoInventario(inventario.getPromedio())
+                        tCosto = 0.0;
+                        tCosto= inventario.TCostoInventario(inventario.getPromedio())
                         +inventario.TCostoconEspera(inventario.getSatisfecho())
                         +inventario.TCostosinEspera(inventario.getInsatisfecho())
                         +inventario.getTcostoOrden();
                         listaCostos.add(tCosto);
                         System.out.println("Costo Total: (Q): "+i+" (R): "+j+(tCosto));
+                        //Limpiar las variables de la clase
+                        inventario.limpiarInventario(objeto.getInvInicial());
                     }
                 } 
                 //Para saber el indice del minimo costo de la lista

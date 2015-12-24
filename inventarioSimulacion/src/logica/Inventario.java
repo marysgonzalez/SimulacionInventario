@@ -41,6 +41,10 @@ public class Inventario {
         this.inicial = inicial;
     }
 
+    public void setTcostoOrden(double TcostoOrden) {
+        this.TcostoOrden = TcostoOrden;
+    }
+
     public void setPromedio(float promedio) {
         this.promedio += promedio;
     }
@@ -235,7 +239,7 @@ public class Inventario {
         int demanda = 0, diaEspera = 0;
         Cliente clienteNuevo;
         double aleatorio;
-         if(opcion==1){
+        if(opcion==1){
             aleatorio = this.GenerarNumeroAleatorio(1, diaSimulacion-1);
             demanda = tDemanda.get(0).UbicarEnTabla(tDemanda, 1, aleatorio);
         }else{
@@ -369,5 +373,22 @@ public class Inventario {
                 return alEntrega.get(this.getOrden().getNumero()-1);
         }
         return 0;
+    }
+    /**
+     * Inicializa todas las variables de inventario
+     * @param inicial inventario inicial
+     */
+    public void limpiarInventario(int inicial){
+        this.setInicial(inicial);
+        this.getOrden().setNumero(0);
+        this.getOrden().setTiempoEntrega(0);
+        this.setInsatisfecho(0);
+        this.setSatisfecho(0);
+        this.setPromedio(0);
+        this.TCostosinEspera(0);
+        this.TCostoconEspera(0);
+        this.TCostoInventario(0);
+        this.setTcostoOrden(0);
+        this.getColaEspera().clear();
     }
 }
