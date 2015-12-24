@@ -73,9 +73,11 @@ public class Main {
             alEntrega = objeto.getNroAleatorioEntrega();
             alEspera = objeto.getNroAleatorioEspera();
 
+            diaSimulacion = 15;
+            
             if(alDemanda!=null && alEntrega!=null && alEspera!=null){
                 System.out.println("Archivo de prueba");
-                diaSimulacion = 15;
+                
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
                 MinQ = 100;
                 MinPR = 75;
@@ -115,18 +117,6 @@ public class Main {
                 MinPR = inventario.calcularPuntoReorden(tEntrega.get(0).getValor(), tDemanda.get(0).getValor(), MinQ);
                 MaxPR = inventario.calcularPuntoReorden(tEntrega.get(tEntrega.size()-1).getValor(), tDemanda.get(tDemanda.size()-1).getValor(), MaxQ);
                 System.out.println("Intervalo de R:"+ MinPR +"-"+MaxPR);
-
-                //Combinaciones Q y R
-                List<Double> listaCostos=null;
-                //son 365
-                int diaSimulacion = 3; 
-                for (int i= MinQ; i<=MaxQ; i++){
-                    for (int j = MinPR; j<=MaxPR; j++){
-                        listaCostos = new ArrayList<Double>();
-                    }
-                } 
-                //Para saber el indice del minimo costo de la lista
-              //  int minIndice = listaCostos.indexOf(Collections.min(listaCostos));
                 
                 //Para mostrar en Excel
                 File archivo = new File("C:\\Users\\Vicky\\Desktop\\totalCosto.xls"); 
@@ -142,10 +132,36 @@ public class Main {
                     System.out.println("Error al crear el archivo Excel: "+ex);
                 }
                 
-                /*Alguna combinacion de q y R*/
-                inventario.getOrden().setCantidad(MinQ);
-                inventario.setPuntoReorden(MinPR);
-                /*Dia de simulacion*/
+                //Combinaciones Q y R
+                List<Double> listaCostos=null;
+
+                for (int i= MinQ; i<=MaxQ; i++){
+                    
+                    for (int j = MinPR; j<=MaxPR; j++){
+                        listaCostos = new ArrayList<Double>();
+                        inventario.getOrden().setCantidad(i);
+                        inventario.setPuntoReorden(j);
+                        for(int k=1; k<= diaSimulacion;k++){
+                            System.out.println("Dia Simulacion:"+ k); 
+                            //LLego orden?
+                            inventario.VerificarOrden(k);
+                            System.out.println("Inv Inicial:"+inventario.getInicial());
+                            inventario.ActualizarInventario(k, tDemanda, tEspera, 1);
+                            inventario.GenerarOrden(k, tEntrega, 1);
+                            System.out.println("-------------------");
+                        }
+                        Double tCosto = inventario.TCostoInventario(inventario.getPromedio())
+                        +inventario.TCostoconEspera(inventario.getSatisfecho())
+                        +inventario.TCostosinEspera(inventario.getInsatisfecho())
+                        +inventario.getTcostoOrden();
+                        listaCostos.add(tCosto);
+                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+(tCosto));
+                    }
+                } 
+                //Para saber el indice del minimo costo de la lista
+              //  int minIndice = listaCostos.indexOf(Collections.min(listaCostos));
+/*                
+                //Dia de simulacion
                 System.out.println("Valor de q:"+ inventario.getOrden().getCantidad());
                 System.out.println("Punto de Reorden:"+inventario.getPuntoReorden());
                 System.out.println("--------------------------");
@@ -175,7 +191,9 @@ public class Main {
     //            System.out.println("Valor de la demanda:"+tDemanda.get(0).UbicarEnTabla(tDemanda));
     //            System.out.println("Dia de espera:"+tEspera.get(0).UbicarEnTabla(tEspera));
     //            System.out.println("Dia de entrega:"+tEntrega.get(0).UbicarEnTabla(tEntrega));
-            }
+    */        
+        }
+            
         } catch (JAXBException ex) {
             System.out.println("Error en Lectura");
         }
