@@ -73,11 +73,10 @@ public class Main {
             alEntrega = objeto.getNroAleatorioEntrega();
             alEspera = objeto.getNroAleatorioEspera();
 
-            diaSimulacion = 15;
             
             if(alDemanda!=null && alEntrega!=null && alEspera!=null){
                 System.out.println("Archivo de prueba");
-                
+                diaSimulacion = 15;
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
                 MinQ = 100;
                 MinPR = 75;
@@ -109,13 +108,13 @@ public class Main {
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
                 //OJO, tienen que evaluarse todas las combinaciones de q y R en este punto
                 // El costo de escasez (s), se calcula: la demanda mas peque;a con el s mas grande, y viceversa
-                MinQ = inventario.calcularCantidadOrden(tDemanda.get(0).getValor(), inventario.getCostosinEspera());
-                MaxQ =  inventario.calcularCantidadOrden(tDemanda.get(tDemanda.size()-1).getValor(), inventario.getCostoconEspera());
+                MinQ = inventario.calcularCantidadOrden(tDemanda.get(0).getMinValor(tDemanda), inventario.getCostosinEspera());
+                MaxQ =  inventario.calcularCantidadOrden(tDemanda.get(0).getMaxValor(tDemanda), inventario.getCostoconEspera());
                 
                 System.out.println("Intervalo de Q:"+ MinQ +"-"+MaxQ);
 
-                MinPR = inventario.calcularPuntoReorden(tEntrega.get(0).getValor(), tDemanda.get(0).getValor(), MinQ);
-                MaxPR = inventario.calcularPuntoReorden(tEntrega.get(tEntrega.size()-1).getValor(), tDemanda.get(tDemanda.size()-1).getValor(), MaxQ);
+                MinPR = inventario.calcularPuntoReorden(tEntrega.get(0).getMinValor(tEntrega), tDemanda.get(0).getMinValor(tDemanda), MinQ);
+                MaxPR = inventario.calcularPuntoReorden(tEntrega.get(0).getMaxValor(tEntrega), tDemanda.get(0).getMaxValor(tDemanda), MaxQ);
                 System.out.println("Intervalo de R:"+ MinPR +"-"+MaxPR);
                 
                 //Para mostrar en Excel
@@ -132,27 +131,27 @@ public class Main {
 //                    System.out.println("Error al crear el archivo Excel: "+ex);
 //                }
 //                
-                //Combinaciones Q y R
+//                Combinaciones Q y R
                 List<Double> listaCostos= new ArrayList<Double>();
                 Double tCosto = 0.0;
                 for (int i= MinQ; i<=MaxQ; i++){
                     //Asignar q
-                    inventario.getOrden().setCantidad(i);
+                   inventario.getOrden().setCantidad(i);
                     for (int j = MinPR; j<=MaxPR; j++){
                         //Asignar R
                         inventario.setPuntoReorden(j);
                         //Simulacion de 365 dias
                         for(int k=1; k<= diaSimulacion;k++){
-                            System.out.println("Dia Simulacion:"+ i);                
+                            System.out.println("Dia Simulacion:"+ k);                
                             //LLego orden?
-                            inventario.VerificarOrden(i);
+                            inventario.VerificarOrden(k);
                             //Ordenar clientes
                             if(inventario.getColaEspera()!=null){
                                 Collections.sort(inventario.getColaEspera());
                             }
                             System.out.println("Inv Inicial:"+inventario.getInicial());
-                            inventario.ActualizarInventario(i, tDemanda, tEspera,0);
-                            inventario.GenerarOrden(i, tEntrega,0);
+                            inventario.ActualizarInventario(k, tDemanda, tEspera,0);
+                            inventario.GenerarOrden(k, tEntrega,0);
                             System.out.println("-------------------");
                         }
                         tCosto = 0.0;
@@ -161,14 +160,17 @@ public class Main {
                         +inventario.TCostosinEspera(inventario.getInsatisfecho())
                         +inventario.getTcostoOrden();
                         listaCostos.add(tCosto);
-                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+(tCosto));
+                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
                         //Limpiar las variables de la clase
                         inventario.limpiarInventario(objeto.getInvInicial());
                     }
+                   
                 } 
+
                 //Para saber el indice del minimo costo de la lista
-              //  int minIndice = listaCostos.indexOf(Collections.min(listaCostos));
-/*                
+                int minIndice = listaCostos.indexOf(Collections.min(listaCostos));
+                System.out.println("Costo minimo:"+minIndice);
+/*              
                 //Dia de simulacion
                 System.out.println("Valor de q:"+ inventario.getOrden().getCantidad());
                 System.out.println("Punto de Reorden:"+inventario.getPuntoReorden());

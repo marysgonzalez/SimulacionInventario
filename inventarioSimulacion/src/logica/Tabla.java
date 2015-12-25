@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author Mary S. Gonzalez
  */
-public class Tabla {
+public class Tabla{
     /**
      * Valor: correspondiente a la probabilidad
      * Probabilidad: lista de probabilidad acumulada
@@ -79,5 +79,22 @@ public class Tabla {
         }
         return 0;
     }
-
+    public int getMinValor(List<Tabla> t){
+        int min = 100000;
+        for(int i=0; i<t.size();i++){
+            if(min > t.get(i).getValor()){
+                min = t.get(i).getValor();
+            }
+        }
+        return min;
+    }
+    public int getMaxValor(List<Tabla> t){
+        int max = 0;
+        for(int i=0; i<t.size();i++){
+            if(max < t.get(i).getValor()){
+                max = t.get(i).getValor();
+            }
+        }
+        return max;
+    }
 }
