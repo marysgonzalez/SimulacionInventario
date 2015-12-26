@@ -168,7 +168,7 @@ public class Main {
                 } 
 
                 //Para saber el indice del minimo costo de la lista
-                int minIndice = listaCostos.indexOf(Collections.min(listaCostos));
+                double minIndice = Collections.min(listaCostos);
                 System.out.println("Costo minimo:"+minIndice);
 /*              
                 //Dia de simulacion
