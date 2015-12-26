@@ -11,13 +11,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import jxl.Workbook;
 import jxl.write.Label;
+import jxl.write.Number;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
@@ -37,7 +36,7 @@ public class Main {
     public static List<Double> alEspera = new ArrayList<Double>();
     public static List<Double> alEntrega = new ArrayList<Double>();
     
-    public static void main(String[] args) throws WriteException {
+    public static void main(String[] args) throws WriteException, IOException {
         mainFrame interfaz;
         Archivo objeto = null;
         List<Tabla> tDemanda = null, tEntrega = null, tEspera = null;
@@ -72,7 +71,11 @@ public class Main {
             alDemanda = objeto.getNroAleatorioDemanda();
             alEntrega = objeto.getNroAleatorioEntrega();
             alEspera = objeto.getNroAleatorioEspera();
-
+            
+            
+            WritableWorkbook excel = Workbook.createWorkbook(new File("C:\\Users\\Vicky\\Desktop\\tablaEventos.xls")); 
+            WritableSheet hojaTrabajo = excel.createSheet("TotalCostos", 0);
+            
             
             if(alDemanda!=null && alEntrega!=null && alEspera!=null){
                 System.out.println("Archivo de prueba");
@@ -86,15 +89,49 @@ public class Main {
                 System.out.println("Valor de q:"+ inventario.getOrden().getCantidad());
                 System.out.println("Punto de Reorden:"+inventario.getPuntoReorden());
                 System.out.println("--------------------------");
+                
+                //Cabecera del archivo Excel
+                Number[] dias = new Number[diaSimulacion+1]; 
+                Number[] invIni = new Number[inventario.getInicial()]; 
+                Label[] titulos = new Label[13];
+                titulos[0] = new Label(0,0,"Dia");
+                titulos[1] = new Label(1,0,"Inv. Inicial");
+                titulos[2] = new Label(2,0,"Nro. Alea. Dem.");
+                titulos[3] = new Label(3,0,"Demanda");
+                titulos[4] = new Label(4,0,"Inv. Final");
+                titulos[5] = new Label(5,0,"Inv. Prom");
+                titulos[6] = new Label(6,0,"Faltante");
+                titulos[7] = new Label(7,0,"Nro. Orden");
+                titulos[8] = new Label(8,0,"Nro. Alea. T_Entrega");
+                titulos[9] = new Label(9,0,"Tiempo Entrega");
+                titulos[10] = new Label(10,0,"Nro. Alea. T_Espera");
+                titulos[11] = new Label(11,0,"Tiempo Espera");
+
+                for (int in=0; in<12; in++){
+                    hojaTrabajo.addCell(titulos[in]);
+                }
+                
                 for(int i=1; i<= diaSimulacion;i++){
                     System.out.println("Dia Simulacion:"+ i); 
                     //LLego orden?
                     inventario.VerificarOrden(i);
                     System.out.println("Inv Inicial:"+inventario.getInicial());
+                    
+                    //Escritura en Excel
+                    dias[i] = new Number(0, i, i);
+                    hojaTrabajo.addCell(dias[i]);
+                    invIni[i] = new Number(1, i, inventario.getInicial());
+                    hojaTrabajo.addCell(invIni[i]);
+                    
                     inventario.ActualizarInventario(i, tDemanda, tEspera, 1);
                     inventario.GenerarOrden(i, tEntrega, 1);
                     System.out.println("-------------------");
+
                 }
+                //Cerrar y escribir archivo Excel
+                excel.write();
+                excel.close();
+                
                 System.out.println("Costo Inventario:"+ inventario.TCostoInventario(inventario.getPromedio()));
                 System.out.println("Costo con espera:"+ inventario.TCostoconEspera(inventario.getSatisfecho()));
                 System.out.println("Costo sin espera:"+ inventario.TCostosinEspera(inventario.getInsatisfecho()));
@@ -134,10 +171,11 @@ public class Main {
 //                Combinaciones Q y R
                 List<Double> listaCostos= new ArrayList<Double>();
                 Double tCosto = 0.0;
-                for (int i= MinQ; i<=MaxQ; i++){
+                Double minC = 99999.99999;
+                for (int i= MinQ; i<=271; i++){
                     //Asignar q
-                   inventario.getOrden().setCantidad(i);
-                    for (int j = MinPR; j<=MaxPR; j++){
+                    inventario.getOrden().setCantidad(i);
+                    for (int j = MinPR; j<=30; j++){
                         //Asignar R
                         inventario.setPuntoReorden(j);
                         //Simulacion de 365 dias
@@ -163,6 +201,13 @@ public class Main {
                         System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
                         //Limpiar las variables de la clase
                         inventario.limpiarInventario(objeto.getInvInicial());
+                        
+                        //Conocer el minimo costo de la lista con su Q y R
+                        if (tCosto < minC){
+                            minC = tCosto;
+                            System.out.println("Costo Minimo (Lista): "+minC+" >> Q: "+i+" R: "+j);
+                        }
+                        
                     }
                    
                 } 
