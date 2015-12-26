@@ -13,22 +13,18 @@ public class Cliente implements Comparable <Cliente>{
     /**
      * demanda: cantidad de un item, generado de la tabla de demanda
      * tiempoEspera: dia de la simulacion hasta el cual el cliente espera un pedido.
-     * satisfecho: cantidad satisfecha de la demanda, cuando espera el  cliente en la cola.
      */
     private int demanda;
     private int tiempoEspera;
-    private int satisfecho; 
 
     /**
      * 
      * @param demanda
      * @param tiempoEspera
-     * @param satisfecho 
      */
-    public Cliente(int demanda, int tiempoEspera, int satisfecho) {
+    public Cliente(int demanda, int tiempoEspera) {
         this.demanda = demanda;
         this.tiempoEspera = tiempoEspera;
-        this.satisfecho = satisfecho;
     }
 
     public int getDemanda() {
@@ -45,14 +41,6 @@ public class Cliente implements Comparable <Cliente>{
 
     public void setTiempoEspera(int tiempoEspera) {
         this.tiempoEspera = tiempoEspera;
-    }
-
-    public int getSatisfecho() {
-        return satisfecho;
-    }
-
-    public void setSatisfecho(int satisfecho) {
-        this.satisfecho = satisfecho;
     }
 
     @Override

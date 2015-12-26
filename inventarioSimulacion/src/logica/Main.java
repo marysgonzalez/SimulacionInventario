@@ -43,7 +43,7 @@ public class Main {
         tDemanda = new ArrayList <Tabla>();
         tEntrega = new ArrayList <Tabla>();
         tEspera = new ArrayList <Tabla>();
-        
+        int datos[] = new int[2];
         int MinQ = 0, MaxQ = 0;
         int MinPR = 0, MaxPR = 0;
         
@@ -73,7 +73,7 @@ public class Main {
             alEspera = objeto.getNroAleatorioEspera();
             
             
-            WritableWorkbook excel = Workbook.createWorkbook(new File("C:\\Users\\Vicky\\Desktop\\tablaEventos.xls")); 
+            WritableWorkbook excel = Workbook.createWorkbook(new File("C:\\Users\\Toshiba PC\\Desktop\\tablaEventos.xls")); 
             WritableSheet hojaTrabajo = excel.createSheet("TotalCostos", 0);
             
             
@@ -89,10 +89,9 @@ public class Main {
                 System.out.println("Valor de q:"+ inventario.getOrden().getCantidad());
                 System.out.println("Punto de Reorden:"+inventario.getPuntoReorden());
                 System.out.println("--------------------------");
-                
+//                
                 //Cabecera del archivo Excel
-                Number[] dias = new Number[diaSimulacion+1]; 
-                Number[] invIni = new Number[inventario.getInicial()]; 
+
                 Label[] titulos = new Label[13];
                 titulos[0] = new Label(0,0,"Dia");
                 titulos[1] = new Label(1,0,"Inv. Inicial");
@@ -114,17 +113,44 @@ public class Main {
                 for(int i=1; i<= diaSimulacion;i++){
                     System.out.println("Dia Simulacion:"+ i); 
                     //LLego orden?
+                    
                     inventario.VerificarOrden(i);
                     System.out.println("Inv Inicial:"+inventario.getInicial());
                     
-                    //Escritura en Excel
-                    dias[i] = new Number(0, i, i);
-                    hojaTrabajo.addCell(dias[i]);
-                    invIni[i] = new Number(1, i, inventario.getInicial());
-                    hojaTrabajo.addCell(invIni[i]);
+                    if(inventario.getInicial()>0){
+                        inventario.VerificarColaClientes(i);
+                    }
                     
-                    inventario.ActualizarInventario(i, tDemanda, tEspera, 1);
-                    inventario.GenerarOrden(i, tEntrega, 1);
+                    //Escritura en Excel
+                    hojaTrabajo.addCell(new Number(0, i, i));
+                    hojaTrabajo.addCell(new Number(1,i, inventario.getInicial()));
+                    hojaTrabajo.addCell(new Number(2,i, alDemanda.get(i-1)));
+    
+                    if(datos[0] > Integer.parseInt(hojaTrabajo.getCell(1, i).getContents())){
+                        for(int l=0; l<alEspera.size();l++){
+                            if(alEspera.get(l)!=0.0){
+                                hojaTrabajo.addCell(new Number(10,i, alEspera.get(l)));
+                                break;
+                            }
+                        }
+                    }
+                    
+                    datos = inventario.ActualizarInventario(i, tDemanda, tEspera, 1);
+                    
+                    hojaTrabajo.addCell(new Number(3,i, datos[0]));
+                    hojaTrabajo.addCell(new Number(4,i, inventario.getInicial()));
+                    hojaTrabajo.addCell(new Number(5,i, ((Integer.parseInt(hojaTrabajo.getCell(1, i).getContents())+inventario.getInicial())/2)));
+                    
+                    if(datos[0] > Integer.parseInt(hojaTrabajo.getCell(1, i).getContents())){
+                        hojaTrabajo.addCell(new Number(6,i, datos[0] - Integer.parseInt(hojaTrabajo.getCell(1, i).getContents())));
+                        hojaTrabajo.addCell(new Number(11,i, datos[1]));
+                    }
+                    
+                    if(inventario.GenerarOrden(i, tEntrega, 1)){
+                        hojaTrabajo.addCell(new Number(7,i, inventario.getOrden().getNumero()));
+                        hojaTrabajo.addCell(new Number(8,i, alEntrega.get(inventario.getOrden().getNumero()-1)));
+                        hojaTrabajo.addCell(new Number(9,i, inventario.getOrden().getTiempoEntrega()-i-1));
+                    }
                     System.out.println("-------------------");
 
                 }
@@ -172,25 +198,28 @@ public class Main {
                 List<Double> listaCostos= new ArrayList<Double>();
                 Double tCosto = 0.0;
                 Double minC = 99999.99999;
-                for (int i= MinQ; i<=271; i++){
+                for (int i= MinQ; i<=MaxQ; i++){
                     //Asignar q
                     inventario.getOrden().setCantidad(i);
-                    for (int j = MinPR; j<=30; j++){
+                    for (int j = MinPR; j<=MaxPR; j++){
                         //Asignar R
                         inventario.setPuntoReorden(j);
                         //Simulacion de 365 dias
                         for(int k=1; k<= diaSimulacion;k++){
-                            System.out.println("Dia Simulacion:"+ k);                
+//                            System.out.println("Dia Simulacion:"+ k);                
                             //LLego orden?
                             inventario.VerificarOrden(k);
                             //Ordenar clientes
-                            if(inventario.getColaEspera()!=null){
+                            if(inventario.getColaEspera()!=null && inventario.getColaEspera().size()!=1){
                                 Collections.sort(inventario.getColaEspera());
                             }
-                            System.out.println("Inv Inicial:"+inventario.getInicial());
+                            if(inventario.getInicial()>0){
+                                inventario.VerificarColaClientes(i);
+                            }
+//                            System.out.println("Inv Inicial:"+inventario.getInicial());
                             inventario.ActualizarInventario(k, tDemanda, tEspera,0);
                             inventario.GenerarOrden(k, tEntrega,0);
-                            System.out.println("-------------------");
+//                            System.out.println("-------------------");
                         }
                         tCosto = 0.0;
                         tCosto= inventario.TCostoInventario(inventario.getPromedio())
@@ -201,7 +230,6 @@ public class Main {
                         System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
                         //Limpiar las variables de la clase
                         inventario.limpiarInventario(objeto.getInvInicial());
-                        
                         //Conocer el minimo costo de la lista con su Q y R
                         if (tCosto < minC){
                             minC = tCosto;
@@ -213,8 +241,8 @@ public class Main {
                 } 
 
                 //Para saber el indice del minimo costo de la lista
-                double minIndice = Collections.min(listaCostos);
-                System.out.println("Costo minimo:"+minIndice);
+                double minIndice = listaCostos.indexOf(Collections.min(listaCostos));
+                System.out.println("Indice:"+minIndice);
 /*              
                 //Dia de simulacion
                 System.out.println("Valor de q:"+ inventario.getOrden().getCantidad());

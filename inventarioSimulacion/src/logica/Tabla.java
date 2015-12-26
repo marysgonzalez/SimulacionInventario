@@ -55,9 +55,7 @@ public class Tabla{
     public int UbicarEnTabla(List<Tabla> lista, int opcion, double aleatorio){
         Random numeroAleatorio;
         double num;
-        DecimalFormat decimales;  
         numeroAleatorio = new Random();
-        decimales = new  DecimalFormat("0.000");
         NumberFormat deci = NumberFormat.getNumberInstance(Locale.UK);
         deci.setMaximumFractionDigits(3);
         if(opcion==0){
@@ -66,7 +64,7 @@ public class Tabla{
             num = aleatorio;
         }
         //Recorrer la lista de probabilidades acumuladas
-        System.out.println("Numero Aleatorio: "+num);
+//        System.out.println("Numero Aleatorio: "+num);
         for(int i=0; i<lista.size(); i++){
             //El primer elemento
             if(i==0 && num>=0 && num<lista.get(i).getProbabilidad()){
