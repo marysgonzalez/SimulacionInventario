@@ -157,15 +157,15 @@ public class Main {
                 //Cerrar y escribir archivo Excel
                 excel.write();
                 excel.close();
-                
-                System.out.println("Costo Inventario:"+ inventario.TCostoInventario(inventario.getPromedio()));
-                System.out.println("Costo con espera:"+ inventario.TCostoconEspera(inventario.getSatisfecho()));
-                System.out.println("Costo sin espera:"+ inventario.TCostosinEspera(inventario.getInsatisfecho()));
+                inventario.TCostoInventario(inventario.getPromedio());
+                inventario.TCostoconEspera(inventario.getSatisfecho());
+                inventario.TCostosinEspera(inventario.getInsatisfecho());
+                System.out.println("Costo Inventario:"+ inventario.getTcostoInventario());
+                System.out.println("Costo con espera:"+ inventario.getTCostoconEspera());
+                System.out.println("Costo sin espera:"+ inventario.getTCostosinEspera());
                 System.out.println("Costo de Orden:"+ inventario.getTcostoOrden());
                 //La suma de todos los costos
-                System.out.println("Costo Total:"+(inventario.TCostoInventario(inventario.getPromedio())
-                +inventario.TCostoconEspera(inventario.getSatisfecho())
-                +inventario.TCostosinEspera(inventario.getInsatisfecho())
+                System.out.println("Costo Total:"+ (inventario.getTcostoInventario()+inventario.getTCostoconEspera()+inventario.getTCostosinEspera()
                 +inventario.getTcostoOrden()));
             }else{
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
@@ -195,8 +195,7 @@ public class Main {
 //                }
 //                
 //                Combinaciones Q y R
-                List<Double> listaCostos= new ArrayList<Double>();
-                Double tCosto = 0.0;
+                Double tCosto;
                 Double minC = 99999.99999;
                 for (int i= MinQ; i<=MaxQ; i++){
                     //Asignar q
@@ -205,8 +204,8 @@ public class Main {
                         //Asignar R
                         inventario.setPuntoReorden(j);
                         //Simulacion de 365 dias
-                        for(int k=1; k<= diaSimulacion;k++){
-//                            System.out.println("Dia Simulacion:"+ k);                
+                        for(int k=1; k<= diaSimulacion;k++){  
+//                            System.out.println("Dia:"+k);
                             //LLego orden?
                             inventario.VerificarOrden(k);
                             //Ordenar clientes
@@ -214,35 +213,40 @@ public class Main {
                                 Collections.sort(inventario.getColaEspera());
                             }
                             if(inventario.getInicial()>0){
-                                inventario.VerificarColaClientes(i);
+                                inventario.VerificarColaClientes(k);
                             }
-//                            System.out.println("Inv Inicial:"+inventario.getInicial());
+//                            System.out.println("Inicial:"+inventario.getInicial());
                             inventario.ActualizarInventario(k, tDemanda, tEspera,0);
                             inventario.GenerarOrden(k, tEntrega,0);
-//                            System.out.println("-------------------");
-                        }
-                        tCosto = 0.0;
-                        tCosto= inventario.TCostoInventario(inventario.getPromedio())
-                        +inventario.TCostoconEspera(inventario.getSatisfecho())
-                        +inventario.TCostosinEspera(inventario.getInsatisfecho())
-                        +inventario.getTcostoOrden();
-                        listaCostos.add(tCosto);
-                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
-                        //Limpiar las variables de la clase
-                        inventario.limpiarInventario(objeto.getInvInicial());
-                        //Conocer el minimo costo de la lista con su Q y R
-                        if (tCosto < minC){
-                            minC = tCosto;
-                            System.out.println("Costo Minimo (Lista): "+minC+" >> Q: "+i+" R: "+j);
                         }
                         
+                        inventario.TCostoInventario(inventario.getPromedio());
+                        inventario.TCostoconEspera(inventario.getSatisfecho());
+                        inventario.TCostosinEspera(inventario.getInsatisfecho());
+                        tCosto = 0.0;
+                        tCosto= inventario.getTCostoconEspera()
+                        +inventario.getTCostosinEspera()
+                        +inventario.getTcostoInventario()
+                        +inventario.getTcostoOrden();
+                        System.out.println("Costo Total: (Q):"+tCosto);
+//                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
+                        //Limpiar las variables de la clase
+                        inventario.limpiarInventario(objeto.getInvInicial());
+                        System.out.println("Promedio:"+ inventario.getPromedio());
+                        //Conocer el minimo costo de la lista con su Q y R
+                        
+                        if (tCosto < minC){
+                            minC = tCosto;
+//                            System.out.println("Costo Minimo (Lista): "+minC+" >> Q: "+i+" R: "+j);
+                        }
+//                        System.out.println("-------------------");
                     }
                    
                 } 
 
                 //Para saber el indice del minimo costo de la lista
-                double minIndice = listaCostos.indexOf(Collections.min(listaCostos));
-                System.out.println("Indice:"+minIndice);
+//                double minIndice = listaCostos.indexOf(Collections.min(listaCostos));
+//                System.out.println("Indice:"+minIndice);
 /*              
                 //Dia de simulacion
                 System.out.println("Valor de q:"+ inventario.getOrden().getCantidad());
@@ -262,18 +266,6 @@ public class Main {
                     inventario.GenerarOrden(i, tEntrega,0);
                     System.out.println("-------------------");
                 }
-                System.out.println("Costo Inventario:"+ inventario.TCostoInventario(inventario.getPromedio()));
-                System.out.println("Costo con espera:"+ inventario.TCostoconEspera(inventario.getSatisfecho()));
-                System.out.println("Costo sin espera:"+ inventario.TCostosinEspera(inventario.getInsatisfecho()));
-                System.out.println("Costo de Orden:"+ inventario.getTcostoOrden());
-                //La suma de todos los costos
-                System.out.println("Costo Total:"+(inventario.TCostoInventario(inventario.getPromedio())
-                +inventario.TCostoconEspera(inventario.getSatisfecho())
-                +inventario.TCostosinEspera(inventario.getInsatisfecho())
-                +inventario.getTcostoOrden()));
-    //            System.out.println("Valor de la demanda:"+tDemanda.get(0).UbicarEnTabla(tDemanda));
-    //            System.out.println("Dia de espera:"+tEspera.get(0).UbicarEnTabla(tEspera));
-    //            System.out.println("Dia de entrega:"+tEntrega.get(0).UbicarEnTabla(tEntrega));
     */        
         }
             

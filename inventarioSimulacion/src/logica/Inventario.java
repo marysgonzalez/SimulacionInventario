@@ -12,7 +12,7 @@ import static logica.Main.*;
  * @author Mary S. Gonzalez
  */
 public class Inventario {
-    private double costoOrden, costoInventario, CostoconEspera, CostosinEspera;
+    private final double costoOrden, costoInventario, CostoconEspera, CostosinEspera;
     private int inicial;
     private float promedio;
     private int puntoReorden, satisfecho, insatisfecho;
@@ -41,10 +41,6 @@ public class Inventario {
         this.inicial = inicial;
     }
 
-    public void setTcostoOrden(double TcostoOrden) {
-        this.TcostoOrden = TcostoOrden;
-    }
-
     public void setPromedio(float promedio) {
         this.promedio += promedio;
     }
@@ -52,35 +48,37 @@ public class Inventario {
         this.puntoReorden = puntoReorden;
     }
 
+    /**
+     * Calcula el costo de orden
+     */
     public void TCostoOrden() {
         this.TcostoOrden += this.costoOrden;
     }
-    /**
-     * 
-     * @param promedio: sumatoriade todos los inventarios promedios
-     */
+
+    public void setTcostoOrden(double TcostoOrden) {
+        this.TcostoOrden = TcostoOrden;
+    }
 
     /**
-     *
-     * @param promedio : sumatoriade todos los inventarios promedios
-     * @return total costo de inventario al final de la simulacion
+     * Calcula el costo de inventario
+     * @param promedio suma de todos los inventarios promedios
      */
-    public double  TCostoInventario(float promedio) {
-        return this.TcostoInventario = this.promedio*(this.costoInventario/365);
+    public void  TCostoInventario(float promedio) {
+        this.TcostoInventario = this.promedio*(this.costoInventario/365);
     }
     /**
      * 
      * @param satisfecho: cantidad de productos vendidos a un cliente que espera
      */
-    public double TCostoconEspera(int satisfecho) {
-        return this.TCostoconEspera = satisfecho*this.CostoconEspera;
+    public void TCostoconEspera(int satisfecho) {
+        this.TCostoconEspera = satisfecho*this.CostoconEspera;
     }
     /**
      * 
      * @param insatisfecho: cantidad de productos cuya venta se perdio
      */
-    public double TCostosinEspera(int insatisfecho) {
-        return this.TCostosinEspera = insatisfecho*this.CostosinEspera;
+    public void TCostosinEspera(int insatisfecho) {
+        this.TCostosinEspera = insatisfecho*this.CostosinEspera;
     }
     public void setSatisfecho(int satisfecho) {
         this.satisfecho += satisfecho;
@@ -149,14 +147,23 @@ public class Inventario {
     public Orden getOrden() {
         return orden;
     }
-
-    public void setOrden(Orden orden) {
-        this.orden = orden;
+    
+    public void setTcostoInventario(double TcostoInventario) {
+        this.TcostoInventario = TcostoInventario;
     }
+
+    public void setTCostoconEspera(double TCostoconEspera) {
+        this.TCostoconEspera = TCostoconEspera;
+    }
+
+    public void setTCostosinEspera(double TCostosinEspera) {
+        this.TCostosinEspera = TCostosinEspera;
+    }
+
     
     /**
-     * @int demanda: demanda del numero aleatorio
-     * @double escasez: costo con espera o sin espera. 
+     * @param demanda: demanda del numero aleatorio
+     * @param escasez: costo con espera o sin espera. 
      */
     public int calcularCantidadOrden(int demanda, double escasez){
         double formula = Math.sqrt((2*this.costoOrden*demanda*365*(this.costoInventario+escasez))/(this.costoInventario*escasez));
@@ -167,6 +174,7 @@ public class Inventario {
      * @param dia: dia de entrega minimo y maximo
      * @param demanda: demanda minima y maxima
      * @param q: cantidad minima y maxima 
+     * @return  valor del punto de reorden
      */
     public int calcularPuntoReorden(int dia, int demanda, int q){
         double to = 0;
@@ -381,12 +389,12 @@ public class Inventario {
         this.setInicial(inicial);
         this.getOrden().setNumero(0);
         this.getOrden().setTiempoEntrega(0);
-        this.setInsatisfecho(0);
-        this.setSatisfecho(0);
-        this.setPromedio(0);
-        this.TCostosinEspera(0);
-        this.TCostoconEspera(0);
-        this.TCostoInventario(0);
+        this.insatisfecho = 0;
+        this.satisfecho = 0;
+        this.promedio = 0;
+        this.setTCostoconEspera(0);
+        this.setTCostosinEspera(0);
+        this.setTcostoInventario(0);
         this.setTcostoOrden(0);
         this.getColaEspera().clear();
     }
