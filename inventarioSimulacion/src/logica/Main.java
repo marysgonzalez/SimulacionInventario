@@ -205,7 +205,6 @@ public class Main {
                         inventario.setPuntoReorden(j);
                         //Simulacion de 365 dias
                         for(int k=1; k<= diaSimulacion;k++){  
-//                            System.out.println("Dia:"+k);
                             //LLego orden?
                             inventario.VerificarOrden(k);
                             //Ordenar clientes
@@ -215,7 +214,6 @@ public class Main {
                             if(inventario.getInicial()>0){
                                 inventario.VerificarColaClientes(k);
                             }
-//                            System.out.println("Inicial:"+inventario.getInicial());
                             inventario.ActualizarInventario(k, tDemanda, tEspera,0);
                             inventario.GenerarOrden(k, tEntrega,0);
                         }
@@ -228,45 +226,23 @@ public class Main {
                         +inventario.getTCostosinEspera()
                         +inventario.getTcostoInventario()
                         +inventario.getTcostoOrden();
-                        System.out.println("Costo Total: (Q):"+tCosto);
-//                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
+//                        System.out.println("Costo Total: (Q):"+tCosto);
+                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
                         //Limpiar las variables de la clase
                         inventario.limpiarInventario(objeto.getInvInicial());
-                        System.out.println("Promedio:"+ inventario.getPromedio());
                         //Conocer el minimo costo de la lista con su Q y R
                         
                         if (tCosto < minC){
                             minC = tCosto;
-//                            System.out.println("Costo Minimo (Lista): "+minC+" >> Q: "+i+" R: "+j);
+                            System.out.println("Costo Minimo (Lista): "+minC+" >> Q: "+i+" R: "+j);
                         }
-//                        System.out.println("-------------------");
                     }
-                   
                 } 
 
                 //Para saber el indice del minimo costo de la lista
 //                double minIndice = listaCostos.indexOf(Collections.min(listaCostos));
 //                System.out.println("Indice:"+minIndice);
-/*              
-                //Dia de simulacion
-                System.out.println("Valor de q:"+ inventario.getOrden().getCantidad());
-                System.out.println("Punto de Reorden:"+inventario.getPuntoReorden());
-                System.out.println("--------------------------");
-                for(int i=1; i<= diaSimulacion;i++){
-                    System.out.println("Dia Simulacion:"+ i);                
-    //             
-                    //LLego orden?
-                    inventario.VerificarOrden(i);
-                    //Ordenar clientes
-                    if(inventario.getColaEspera()!=null){
-                        Collections.sort(inventario.getColaEspera());
-                    }
-                    System.out.println("Inv Inicial:"+inventario.getInicial());
-                    inventario.ActualizarInventario(i, tDemanda, tEspera,0);
-                    inventario.GenerarOrden(i, tEntrega,0);
-                    System.out.println("-------------------");
-                }
-    */        
+      
         }
             
         } catch (JAXBException ex) {
