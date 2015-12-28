@@ -5,7 +5,7 @@
  */
 package logica;
 import java.util.*;
-import static logica.Main.*;
+import static logica.Simulacion.*;
 
 /**
  *
@@ -217,7 +217,7 @@ public class Inventario {
                         //Vender todo lo que queda
 //                         System.out.println("No fue suficiente.");
                         this.setInicial(0);
-                        this.colaEspera.get(i).setDemanda(demanda-this.inicial);               
+                        this.setInsatisfecho(demanda-this.inicial);               
                     }
                 }else{
                     //Paso el dia maximo de espera, se calcula el costo sin espera
@@ -245,9 +245,9 @@ public class Inventario {
         double aleatorio;
         if(opcion==1){
             aleatorio = this.GenerarNumeroAleatorio(1, diaSimulacion-1);
-            demanda = tDemanda.get(0).UbicarEnTabla(tDemanda, 1, aleatorio);
+            demanda = tDemanda.get(0).UbicarEnTabla(tDemanda, 1, aleatorio,1);
         }else{
-            demanda = tDemanda.get(0).UbicarEnTabla(tDemanda, 0, 0);
+            demanda = tDemanda.get(0).UbicarEnTabla(tDemanda, 0, 0,1);
         }
 //        System.out.println("Demanda:"+demanda);
         inicial = this.getInicial();
@@ -307,9 +307,9 @@ public class Inventario {
             this.getOrden().setNumero(numero+1);
             if(opcion==1){
                 aleatorio = this.GenerarNumeroAleatorio(3,0);
-                diaEntrega = tEntrega.get(0).UbicarEnTabla(tEntrega, 3, aleatorio);
+                diaEntrega = tEntrega.get(0).UbicarEnTabla(tEntrega, 3, aleatorio,3);
             }else{
-                diaEntrega = tEntrega.get(0).UbicarEnTabla(tEntrega, opcion, 0);
+                diaEntrega = tEntrega.get(0).UbicarEnTabla(tEntrega, opcion, 0,3);
             }  
 //            System.out.println("Dia para la orden:"+diaEntrega);
             this.getOrden().setTiempoEntrega(diaSimulacion+diaEntrega+1);
@@ -333,9 +333,9 @@ public class Inventario {
         double aleatorio;
         if(opcion == 1){
             aleatorio = this.GenerarNumeroAleatorio(2,0);
-            diaEspera = tEspera.get(0).UbicarEnTabla(tEspera, 2, aleatorio);
+            diaEspera = tEspera.get(0).UbicarEnTabla(tEspera, 2, aleatorio,2);
         }else{
-            diaEspera = tEspera.get(0).UbicarEnTabla(tEspera, 0, 0);
+            diaEspera = tEspera.get(0).UbicarEnTabla(tEspera, 0, 0,2);
         }
         InvFinal = demanda-this.getInicial();
         if(diaEspera!=0){

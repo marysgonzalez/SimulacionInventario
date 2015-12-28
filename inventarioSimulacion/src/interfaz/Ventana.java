@@ -81,6 +81,7 @@ public class Ventana extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jMenu1.setText("Simulación");
 
@@ -153,13 +154,14 @@ public class Ventana extends javax.swing.JFrame {
 
         JFrame info = new JFrame("Acerca de");
         info.setLayout(new GridLayout());
-        JLabel texto = new JLabel("<html>Universidad Católica Andrés Bello <br> Facultad de Ingeniería </html>");        
+        JLabel texto = new JLabel("<html><div align='center' ><p>Universidad Católica Andrés Bello</p> <br> <p>Facultad de Ingeniería</p> <br> <p>Escuela de Informática</p> <br> <p>Proyecto de Simulación de Inventario</p> </div> </html>");        
         
         info.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        info.setBounds(100, 100, 300, 300);
+        info.setBounds(5, 5, 250, 200);
+        
         
         info.add(texto);
-        info.pack();
+        
         info.setVisible(true);
     }//GEN-LAST:event_jMenu2MouseClicked
 
