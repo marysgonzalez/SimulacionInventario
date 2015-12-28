@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -151,17 +152,22 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
-
+        JLabel img = new JLabel();
         JFrame info = new JFrame("Acerca de");
         info.setLayout(new GridLayout());
-        JLabel texto = new JLabel("<html><div align='center' ><p>Universidad Católica Andrés Bello</p> <br> <p>Facultad de Ingeniería</p> <br> <p>Escuela de Informática</p> <br> <p>Proyecto de Simulación de Inventario</p> </div> </html>");        
         
-        info.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        info.setBounds(5, 5, 250, 200);
+        img.setBounds(0, 0, 270, 40);
+        JLabel texto = new JLabel("<html><div align='center' style='padding-left: 13px;'>"
+                + "<strong><p>Universidad Católica Andrés Bello</p> "
+                + "<br> <p>Facultad de Ingeniería</p> <br> <p>Escuela de Informática</p> "
+                + "<br> <p>Proyecto de Simulación de Inventario</p> <br><br> <p> Estudiantes: </p>"
+                + "<br> <p>Fuenmayor, Victoria </p> "
+                + "<br> <p>Salcedo, Marianny </p> </strong> </div> </html>");        
         
-        
+        info.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        info.setBounds(5, 5, 270, 320);
+        info.add(img);
         info.add(texto);
-        
         info.setVisible(true);
     }//GEN-LAST:event_jMenu2MouseClicked
 
