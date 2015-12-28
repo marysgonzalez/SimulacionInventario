@@ -15,8 +15,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import jxl.Workbook;
+import jxl.write.Colour;
 import jxl.write.Label;
 import jxl.write.Number;
+import jxl.write.Pattern;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
@@ -88,21 +92,28 @@ public class Main {
 //                
                 //Cabecera del archivo Excel
 
-                Label[] titulos = new Label[13];
-                titulos[0] = new Label(0,0,"Dia");
-                titulos[1] = new Label(1,0,"Inv. Inicial");
-                titulos[2] = new Label(2,0,"Nro. Alea. Dem.");
-                titulos[3] = new Label(3,0,"Demanda");
-                titulos[4] = new Label(4,0,"Inv. Final");
-                titulos[5] = new Label(5,0,"Inv. Prom");
-                titulos[6] = new Label(6,0,"Faltante");
-                titulos[7] = new Label(7,0,"Nro. Orden");
-                titulos[8] = new Label(8,0,"Nro. Alea. T_Entrega");
-                titulos[9] = new Label(9,0,"Tiempo Entrega");
-                titulos[10] = new Label(10,0,"Nro. Alea. T_Espera");
-                titulos[11] = new Label(11,0,"Tiempo Espera");
-
-                for (int in=0; in<12; in++){
+                Label[] titulos = new Label[18];
+                titulos[0] = new Label(0,0,"Dia",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[1] = new Label(1,0,"Inv. Inicial",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[2] = new Label(2,0,"Nro. Alea. Dem.",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[3] = new Label(3,0,"Demanda",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[4] = new Label(4,0,"Inv. Final",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[5] = new Label(5,0,"Inv. Prom",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[6] = new Label(6,0,"Faltante",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[7] = new Label(7,0,"Nro. Orden",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[8] = new Label(8,0,"Nro. Alea. T_Entrega",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[9] = new Label(9,0,"Tiempo Entrega",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[10] = new Label(10,0,"Nro. Alea. T_Espera",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[11] = new Label(11,0,"Tiempo Espera",getCellFormat(jxl.format.Colour.GREEN));
+                
+                titulos[12] = new Label(0,diaSimulacion+4,"Costo de Inventario");
+                titulos[13] = new Label(0,diaSimulacion+5,"Costo Faltante");
+                titulos[14] = new Label(0,diaSimulacion+6,"Costo de Orden");
+                titulos[15] = new Label(0,diaSimulacion+7,"Costo Total", getCellFormat(null)); 
+                titulos[16] = new Label(0,diaSimulacion+8,"Q", getCellFormat(null));
+                titulos[17] = new Label(0,diaSimulacion+9,"PR", getCellFormat(null));
+                
+                for (int in=0;in<titulos.length; in++){
                     hojaTrabajo.addCell(titulos[in]);
                 }
                 
@@ -138,7 +149,7 @@ public class Main {
                     hojaTrabajo.addCell(new Number(5,i, ((Integer.parseInt(hojaTrabajo.getCell(1, i).getContents())+inventario.getInicial())/2)));
                     
                     if(datos[0] > Integer.parseInt(hojaTrabajo.getCell(1, i).getContents())){
-                        hojaTrabajo.addCell(new Number(6,i, datos[0] - Integer.parseInt(hojaTrabajo.getCell(1, i).getContents())));
+                        hojaTrabajo.addCell(new Number(6,i, (datos[0] - Integer.parseInt(hojaTrabajo.getCell(1, i).getContents()))));
                         hojaTrabajo.addCell(new Number(11,i, datos[1]));
                     }
                     
@@ -150,19 +161,22 @@ public class Main {
                     System.out.println("-------------------");
 
                 }
+                
+                inventario.TCostoInventario(inventario.getPromedio());
+                inventario.TCostoconEspera(inventario.getSatisfecho());
+                inventario.TCostosinEspera(inventario.getInsatisfecho());
+                tCosto = inventario.getTCostoconEspera()+inventario.getTCostosinEspera()+inventario.getTcostoInventario()+inventario.getTcostoOrden();
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+4, inventario.getTcostoInventario()));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+5, (inventario.getTCostoconEspera()+inventario.getTCostosinEspera())));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+6, inventario.getTcostoOrden()));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+7, tCosto));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+8, MinQ));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+9, MinPR));
                 //Cerrar y escribir archivo Excel
                 excel.write();
                 excel.close();
                 
-                System.out.println("Costo Inventario:"+ inventario.TCostoInventario(inventario.getPromedio()));
-                System.out.println("Costo con espera:"+ inventario.TCostoconEspera(inventario.getSatisfecho()));
-                System.out.println("Costo sin espera:"+ inventario.TCostosinEspera(inventario.getInsatisfecho()));
-                System.out.println("Costo de Orden:"+ inventario.getTcostoOrden());
-                //La suma de todos los costos
-                System.out.println("Costo Total:"+(inventario.TCostoInventario(inventario.getPromedio())
-                +inventario.TCostoconEspera(inventario.getSatisfecho())
-                +inventario.TCostosinEspera(inventario.getInsatisfecho())
-                +inventario.getTcostoOrden()));
+//              
             }else{
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
                 //OJO, tienen que evaluarse todas las combinaciones de q y R en este punto
@@ -191,8 +205,7 @@ public class Main {
 //                }
 //                
 //                Combinaciones Q y R
-                List<Double> listaCostos= new ArrayList<Double>();
-                Double tCosto = 0.0;
+                
                 Double minC = 99999.99999;
                 for (int i= MinQ; i<=MaxQ; i++){
                     //Asignar q
@@ -201,8 +214,7 @@ public class Main {
                         //Asignar R
                         inventario.setPuntoReorden(j);
                         //Simulacion de 365 dias
-                        for(int k=1; k<= diaSimulacion;k++){
-//                            System.out.println("Dia Simulacion:"+ k);                
+                        for(int k=1; k<= diaSimulacion;k++){  
                             //LLego orden?
                             inventario.VerificarOrden(k);
                             //Ordenar clientes
@@ -210,30 +222,31 @@ public class Main {
                                 Collections.sort(inventario.getColaEspera());
                             }
                             if(inventario.getInicial()>0){
-                                inventario.VerificarColaClientes(i);
+                                inventario.VerificarColaClientes(k);
                             }
-//                            System.out.println("Inv Inicial:"+inventario.getInicial());
                             inventario.ActualizarInventario(k, tDemanda, tEspera,0);
                             inventario.GenerarOrden(k, tEntrega,0);
-//                            System.out.println("-------------------");
                         }
+                        
+                        inventario.TCostoInventario(inventario.getPromedio());
+                        inventario.TCostoconEspera(inventario.getSatisfecho());
+                        inventario.TCostosinEspera(inventario.getInsatisfecho());
                         tCosto = 0.0;
-                        tCosto= inventario.TCostoInventario(inventario.getPromedio())
-                        +inventario.TCostoconEspera(inventario.getSatisfecho())
-                        +inventario.TCostosinEspera(inventario.getInsatisfecho())
+                        tCosto= inventario.getTCostoconEspera()
+                        +inventario.getTCostosinEspera()
+                        +inventario.getTcostoInventario()
                         +inventario.getTcostoOrden();
                         listaCostos.add(tCosto);
                         //System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
                         //Limpiar las variables de la clase
                         inventario.limpiarInventario(objeto.getInvInicial());
                         //Conocer el minimo costo de la lista con su Q y R
+                        
                         if (tCosto < minC){
                             minC = tCosto;
                             System.out.println("Costo Minimo (Lista): "+minC+" >> Q: "+i+" R: "+j);
                         }
-                        
                     }
-                   
                 } 
 
                 //Para saber el indice del minimo costo de la lista
@@ -280,5 +293,20 @@ public class Main {
         }
 */        
     }
-
+    private static WritableCellFormat getCellFormat(jxl.format.Colour colour) throws WriteException {
+        WritableFont cellFont;
+        WritableCellFormat cellFormat;
+        if(colour!=null){
+            cellFont = new WritableFont(WritableFont.ARIAL, 10,WritableFont.BOLD);
+            cellFormat = new WritableCellFormat(cellFont);
+            cellFont.setColour(jxl.format.Colour.WHITE);
+            cellFormat.setBackground(colour);
+        }else{
+            cellFont = new WritableFont(WritableFont.ARIAL, 10, WritableFont.BOLD);
+            cellFormat = new WritableCellFormat(cellFont);
+            cellFormat.setBackground(jxl.format.Colour.AQUA);
+        }
+        
+    return cellFormat;
+  }
 }
