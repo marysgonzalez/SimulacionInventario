@@ -65,7 +65,7 @@ public class Simulacion{
             alEntrega = objeto.getNroAleatorioEntrega();
             alEspera = objeto.getNroAleatorioEspera();
             
-            WritableWorkbook excel = Workbook.createWorkbook(new File("C:\\Users\\Vicky\\Desktop\\tablaEventos.xls")); 
+            WritableWorkbook excel = Workbook.createWorkbook(new File("C:\\Users\\Toshiba PC\\Desktop\\tablaEventos.xls")); 
             WritableSheet hojaTrabajo = excel.createSheet("TotalCostos", 0);
             
             

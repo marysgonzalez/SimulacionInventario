@@ -217,7 +217,7 @@ public class Inventario {
                         //Vender todo lo que queda
 //                         System.out.println("No fue suficiente.");
                         this.setInicial(0);
-                        this.setInsatisfecho(demanda-this.inicial);               
+                        this.colaEspera.get(i).setDemanda(demanda-this.inicial);               
                     }
                 }else{
                     //Paso el dia maximo de espera, se calcula el costo sin espera
