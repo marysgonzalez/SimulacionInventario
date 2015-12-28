@@ -24,12 +24,15 @@ import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
-import static logica.Main.*;
 
 
 
 public class Simulacion{
-
+    static int diaSimulacion=365;
+    public static List<Double> alDemanda = new ArrayList<Double>();
+    public static List<Double> alEspera = new ArrayList<Double>();
+    public static List<Double> alEntrega = new ArrayList<Double>();
+    
     public void iniciarSim (String direccion) throws IOException, WriteException{
         Ventana interfaz;
         Archivo objeto = null;

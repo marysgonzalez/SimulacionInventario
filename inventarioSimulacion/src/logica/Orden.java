@@ -5,7 +5,7 @@
  */
 package logica;
 
-import static logica.Main.diaSimulacion;
+import static logica.Simulacion.*;
 
 /**
  *

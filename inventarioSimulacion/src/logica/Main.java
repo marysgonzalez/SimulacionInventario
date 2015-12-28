@@ -35,10 +35,7 @@ public class Main {
      * @param args the command line arguments
      */
     
-    static int diaSimulacion=365;
-    public static List<Double> alDemanda = new ArrayList<Double>();
-    public static List<Double> alEspera = new ArrayList<Double>();
-    public static List<Double> alEntrega = new ArrayList<Double>();
+    
     
     public static void main(String[] args) {
 /*

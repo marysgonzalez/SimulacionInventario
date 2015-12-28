@@ -8,6 +8,7 @@ package logica;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
+import static logica.Simulacion.*;
 
 /**
  *
@@ -50,9 +51,10 @@ public class Tabla{
      * @param lista de demanda, entrega o espera
      * @param opcion 0: ejecucion normal 1:ejecucion de prueba
      * @param aleatorio numero aleatorio del archivo
+     * @param tipo 1: demanda, 2:espera, 3: entrega
      * @return 
      */
-    public int UbicarEnTabla(List<Tabla> lista, int opcion, double aleatorio){
+    public int UbicarEnTabla(List<Tabla> lista, int opcion, double aleatorio, int tipo){
         Random numeroAleatorio;
         double num;
         numeroAleatorio = new Random();
@@ -60,6 +62,13 @@ public class Tabla{
         deci.setMaximumFractionDigits(3);
         if(opcion==0){
             num = Double.parseDouble(deci.format(numeroAleatorio.nextDouble()));
+            if (tipo == 1){
+                alDemanda.add(num);
+            }else if (tipo == 2){
+                alEspera.add(num);
+            }else if(tipo == 3){
+                alEntrega.add(num);
+            }
         }else{
             num = aleatorio;
         }
