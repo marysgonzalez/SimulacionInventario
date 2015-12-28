@@ -358,6 +358,7 @@ public class Inventario {
         double numero;
         switch(opcion){
             case 1:
+                System.out.println("Algo: "+alDemanda);
                 return alDemanda.get(index);
             case 2:
                 for(int i=0; i<alEspera.size();i++){
