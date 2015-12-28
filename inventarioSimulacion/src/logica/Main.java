@@ -193,21 +193,7 @@ public class Main {
                 MinPR = inventario.calcularPuntoReorden(tEntrega.get(0).getMinValor(tEntrega), tDemanda.get(0).getMinValor(tDemanda), MinQ);
                 MaxPR = inventario.calcularPuntoReorden(tEntrega.get(0).getMaxValor(tEntrega), tDemanda.get(0).getMaxValor(tDemanda), MaxQ);
                 System.out.println("Intervalo de R:"+ MinPR +"-"+MaxPR);
-                
-                //Para mostrar en Excel
-//                File archivo = new File("C:\\Users\\Vicky\\Desktop\\totalCosto.xls"); 
-//                WritableWorkbook excel;
-//                try {
-//                    excel = Workbook.createWorkbook(archivo);
-//                    WritableSheet hojaTrabajo = excel.createSheet("TotalCostos", 0);
-//                    Label input = new Label(0,0,"Dato 1");
-//                    hojaTrabajo.addCell(input);
-//                    excel.write();
-//                    excel.close();
-//                } catch (IOException ex) {
-//                    System.out.println("Error al crear el archivo Excel: "+ex);
-//                }
-//                
+
 //                Combinaciones Q y R
                 
                 Double minC = 99999.99999;
@@ -240,7 +226,6 @@ public class Main {
                         +inventario.getTCostosinEspera()
                         +inventario.getTcostoInventario()
                         +inventario.getTcostoOrden();
-//                        System.out.println("Costo Total: (Q):"+tCosto);
                         System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
                         //Limpiar las variables de la clase
                         inventario.limpiarInventario(objeto.getInvInicial());

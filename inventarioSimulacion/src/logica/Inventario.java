@@ -204,8 +204,6 @@ public class Inventario {
                 //Si aun no se cumple el dia maximo de espera del cliente
                 if(this.colaEspera.get(i).getTiempoEspera() >= diaSimulacion){
                     demanda = this.colaEspera.get(i).getDemanda();
-//                    System.out.println("Se atendio al cliente #"+i);
-//                    System.out.println("Demanda del cliente:"+ demanda);
                     //Se puede satisfacer la demanda del cliente con el inventario actual?
                     if(this.getInicial() >= demanda){
                         this.setInicial(this.getInicial() - demanda);
@@ -215,12 +213,11 @@ public class Inventario {
                         i--;
                     }else{
                         //Vender todo lo que queda
-//                         System.out.println("No fue suficiente.");
                         this.setInicial(0);
-                        this.setInsatisfecho(demanda-this.inicial);               
+                        this.colaEspera.get(i).setDemanda(demanda-this.getInicial());
                     }
                 }else{
-                    //Paso el dia maximo de espera, se calcula el costo sin espera
+                    //Espera excedida, se calcula el costo sin espera
 //                    System.out.println("Espera excedida");
                     this.setInsatisfecho(demanda);
                     this.colaEspera.remove(i);
