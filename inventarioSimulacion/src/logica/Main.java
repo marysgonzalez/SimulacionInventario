@@ -5,7 +5,7 @@
  */
 package logica;
 
-import interfaz.mainFrame;
+import interfaz.Ventana;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,8 +40,8 @@ public class Main {
     public static List<Double> alEspera = new ArrayList<Double>();
     public static List<Double> alEntrega = new ArrayList<Double>();
     
-    public static void main(String[] args) throws WriteException, IOException {
-        mainFrame interfaz;
+    public static void main(String[] args) {
+/*
         Archivo objeto = null;
         List<Tabla> tDemanda = null, tEntrega = null, tEspera = null;
         tDemanda = new ArrayList <Tabla>();
@@ -50,16 +50,13 @@ public class Main {
         int datos[] = new int[2];
         int MinQ = 0, MaxQ = 0;
         int MinPR = 0, MaxPR = 0;
-        Double tCosto;
-        try {    
-            interfaz = new mainFrame();
-            
-            File file = new File(interfaz.getDireccion());
+        
+        try { 
             JAXBContext jaxbContext;
             jaxbContext = JAXBContext.newInstance(Archivo.class);
             
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            objeto = (Archivo) jaxbUnmarshaller.unmarshal(file);
+
             
            // Calcular las prob acumuladas
             objeto.calcularProbAcum(objeto.getDemanda());
@@ -76,8 +73,7 @@ public class Main {
             alEntrega = objeto.getNroAleatorioEntrega();
             alEspera = objeto.getNroAleatorioEspera();
             
-            
-            WritableWorkbook excel = Workbook.createWorkbook(new File("C:\\Users\\Toshiba PC\\Desktop\\tablaEventos.xls")); 
+            WritableWorkbook excel = Workbook.createWorkbook(new File("C:\\Users\\Vicky\\Desktop\\tablaEventos.xls")); 
             WritableSheet hojaTrabajo = excel.createSheet("TotalCostos", 0);
             
             
@@ -89,7 +85,7 @@ public class Main {
                 MinPR = 75;
                 inventario.getOrden().setCantidad(MinQ);
                 inventario.setPuntoReorden(MinPR);
-                /*Dia de simulacion*/
+                Dia de simulacion
                 System.out.println("Valor de q:"+ inventario.getOrden().getCantidad());
                 System.out.println("Punto de Reorden:"+inventario.getPuntoReorden());
                 System.out.println("--------------------------");
@@ -226,7 +222,8 @@ public class Main {
                         +inventario.getTCostosinEspera()
                         +inventario.getTcostoInventario()
                         +inventario.getTcostoOrden();
-                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
+                        listaCostos.add(tCosto);
+                        //System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
                         //Limpiar las variables de la clase
                         inventario.limpiarInventario(objeto.getInvInicial());
                         //Conocer el minimo costo de la lista con su Q y R
@@ -239,14 +236,48 @@ public class Main {
                 } 
 
                 //Para saber el indice del minimo costo de la lista
-//                double minIndice = listaCostos.indexOf(Collections.min(listaCostos));
-//                System.out.println("Indice:"+minIndice);
-      
+                double minIndice = listaCostos.indexOf(Collections.min(listaCostos));
+                System.out.println("Indice:"+minIndice);
+              
+                //Dia de simulacion
+                System.out.println("Valor de q:"+ inventario.getOrden().getCantidad());
+                System.out.println("Punto de Reorden:"+inventario.getPuntoReorden());
+                System.out.println("--------------------------");
+                for(int i=1; i<= diaSimulacion;i++){
+                    System.out.println("Dia Simulacion:"+ i);                
+    //             
+                    //LLego orden?
+                    inventario.VerificarOrden(i);
+                    //Ordenar clientes
+                    if(inventario.getColaEspera()!=null){
+                        Collections.sort(inventario.getColaEspera());
+                    }
+                    System.out.println("Inv Inicial:"+inventario.getInicial());
+                    inventario.ActualizarInventario(i, tDemanda, tEspera,0);
+                    inventario.GenerarOrden(i, tEntrega,0);
+                    System.out.println("-------------------");
+                }
+                System.out.println("Costo Inventario:"+ inventario.TCostoInventario(inventario.getPromedio()));
+                System.out.println("Costo con espera:"+ inventario.TCostoconEspera(inventario.getSatisfecho()));
+                System.out.println("Costo sin espera:"+ inventario.TCostosinEspera(inventario.getInsatisfecho()));
+                System.out.println("Costo de Orden:"+ inventario.getTcostoOrden());
+                //La suma de todos los costos
+                System.out.println("Costo Total:"+(inventario.TCostoInventario(inventario.getPromedio())
+                +inventario.TCostoconEspera(inventario.getSatisfecho())
+                +inventario.TCostosinEspera(inventario.getInsatisfecho())
+                +inventario.getTcostoOrden()));
+    //            System.out.println("Valor de la demanda:"+tDemanda.get(0).UbicarEnTabla(tDemanda));
+    //            System.out.println("Dia de espera:"+tEspera.get(0).UbicarEnTabla(tEspera));
+    //            System.out.println("Dia de entrega:"+tEntrega.get(0).UbicarEnTabla(tEntrega));
+            
         }
+//            }
+            
             
         } catch (JAXBException ex) {
             System.out.println("Error en Lectura");
         }
+*/        
     }
     private static WritableCellFormat getCellFormat(jxl.format.Colour colour) throws WriteException {
         WritableFont cellFont;
