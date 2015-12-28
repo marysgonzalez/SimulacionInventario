@@ -17,8 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import jxl.write.WriteException;
-import logica.Main;
 import logica.Simulacion;
+import static logica.Simulacion.alDemanda;
 
 /**
  *
