@@ -28,11 +28,11 @@ import jxl.write.WriteException;
 
 
 public class Simulacion{
-    static int diaSimulacion=365;
-    public static List<Double> alDemanda = new ArrayList<Double>();
-    public static List<Double> alEspera = new ArrayList<Double>();
-    public static List<Double> alEntrega = new ArrayList<Double>();
-    
+    static int diaSimulacion = 365;
+    public static List<Double> alDemanda =  new ArrayList<Double>();
+    public static List<Double> alEspera =  new ArrayList<Double>();
+    public static List<Double> alEntrega =  new ArrayList<Double>();
+
     public void iniciarSim (String direccion) throws IOException, WriteException{
         Ventana interfaz;
         Archivo objeto = null;
@@ -44,6 +44,7 @@ public class Simulacion{
         int MinQ = 0, MaxQ = 0, qMin = 0;
         int MinPR = 0, MaxPR = 0, rMin = 0;
         Double tCosto = 0.0;
+        
         
         try {    
             File file = new File(direccion);
@@ -113,6 +114,7 @@ public class Simulacion{
                 }
                 
                 for(int i=1; i<= diaSimulacion;i++){
+                    
                     System.out.println("Dia Simulacion:"+ i); 
                     //LLego orden?
                     
@@ -174,6 +176,9 @@ public class Simulacion{
 //              
             }else{
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
+                alDemanda = new ArrayList<Double>();
+                alEspera = new ArrayList<Double>();
+                alEntrega = new ArrayList<Double>();
                 //OJO, tienen que evaluarse todas las combinaciones de q y R en este punto
                 // El costo de escasez (s), se calcula: la demanda mas peque;a con el s mas grande, y viceversa
                 MinQ = inventario.calcularCantidadOrden(tDemanda.get(0).getMinValor(tDemanda), inventario.getCostosinEspera());
@@ -185,8 +190,8 @@ public class Simulacion{
                 MaxPR = inventario.calcularPuntoReorden(tEntrega.get(0).getMaxValor(tEntrega), tDemanda.get(0).getMaxValor(tDemanda), MaxQ);
                 System.out.println("Intervalo de R:"+ MinPR +"-"+MaxPR);
 
+                
 //                Combinaciones Q y R
-                List<Double> listaCostos= new ArrayList<Double>();
                 Double minC = 99999.99999;
                 for (int i= MinQ; i<=MaxQ; i++){
                     //Asignar q
