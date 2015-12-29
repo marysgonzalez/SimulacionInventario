@@ -215,19 +215,21 @@ public class Inventario {
                         i--;
                     }else{
                         //Vender todo lo que queda
-//                         System.out.println("No fue suficiente.");
+                        demanda =demanda-this.getInicial();
+                        this.setSatisfecho(this.getInicial());
+//                        System.out.println("No fue suficiente. Faltan:"+ demanda);
                         this.setInicial(0);
-                        this.colaEspera.get(i).setDemanda(demanda-this.inicial);               
+                        this.colaEspera.get(i).setDemanda(demanda);
                     }
                 }else{
                     //Paso el dia maximo de espera, se calcula el costo sin espera
-//                    System.out.println("Espera excedida");
+//                    System.out.println("Espera excedida. Sin espera:"+this.colaEspera.get(i).getDemanda());
                     this.setInsatisfecho(this.colaEspera.get(i).getDemanda());
                     this.colaEspera.remove(i);
                     i--;
                 }
             }
-//            System.out.println("-------------------");
+            System.out.println("-------------------");
         }
          
     }
@@ -239,7 +241,7 @@ public class Inventario {
      * @param opcion 1:lista de numeros aleatorios del archivo 0: numero aleatorio de la funcion
      */
     public int[] ActualizarInventario(int diaSimulacion, List<Tabla>tDemanda, List<Tabla>tEspera, int opcion){
-        int InvFinal = 0, inicial=0;
+        int InvFinal = 0, InvInicial=0;
         int demanda = 0;
         int tabla[] = new int[2];
         double aleatorio;
@@ -250,12 +252,12 @@ public class Inventario {
             demanda = tDemanda.get(0).UbicarEnTabla(tDemanda, 0, 0,1);
         }
 //        System.out.println("Demanda:"+demanda);
-        inicial = this.getInicial();
-        if(inicial>0){
+        InvInicial = this.getInicial();
+        if(InvInicial>0){
             //Si se puede satisfacer la demanda del cliente
-            if(demanda <= inicial){
-                InvFinal = inicial - demanda;
-                this.setPromedio(Math.round((inicial+InvFinal)/2));
+            if(demanda <= InvInicial){
+                InvFinal = InvInicial - demanda;
+                this.setPromedio(Math.round((InvInicial+InvFinal)/2));
 //                System.out.println("Inventario Promedio:"+ Math.round((inicial+InvFinal)/2));
                 this.setInicial(InvFinal);
             }else{
@@ -270,7 +272,7 @@ public class Inventario {
             }
         }else{
             //Generar espera para el cliente
-            this.setPromedio(Math.round((inicial)/2));
+            this.setPromedio(Math.round((InvInicial)/2));
 //            System.out.println("Inventario Promedio:"+ (inicial/2));
             if(opcion==1){
                 tabla[1] = this.GenerarEspera(tEspera, diaSimulacion, demanda, 1);
@@ -303,7 +305,8 @@ public class Inventario {
         int numero = this.getOrden().getNumero();
         int diaEntrega = 0;
         double aleatorio;
-        if(this.getInicial()< this.getPuntoReorden() && this.getOrden().getTiempoEntrega()==0){
+        //Si el inventario es menor al punto de reorden y no hay ordenes pendientes
+        if(this.getInicial()<= this.getPuntoReorden() && this.getOrden().getTiempoEntrega()==0){
             this.getOrden().setNumero(numero+1);
             if(opcion==1){
                 aleatorio = this.GenerarNumeroAleatorio(3,0);
@@ -350,7 +353,7 @@ public class Inventario {
 //            System.out.println("Faltante del cliente:"+ clienteNuevo.getDemanda());
 
         }else{
-//            System.out.println("El cliente no espera.");
+//          El cliente no espera
             this.setInicial(0);
             this.setInsatisfecho(InvFinal);
         }

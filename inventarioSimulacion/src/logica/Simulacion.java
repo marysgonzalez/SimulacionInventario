@@ -81,11 +81,6 @@ public class Simulacion{
                 MinPR = 75;
                 inventario.getOrden().setCantidad(MinQ);
                 inventario.setPuntoReorden(MinPR);
-                /*Dia de simulacion*/
-                System.out.println("Valor de q:"+ inventario.getOrden().getCantidad());
-                System.out.println("Punto de Reorden:"+inventario.getPuntoReorden());
-                System.out.println("--------------------------");
-//                
                 //Cabecera del archivo Excel
 
                 Label[] titulos = new Label[18];
@@ -112,25 +107,19 @@ public class Simulacion{
                 for (int in=0;in<titulos.length; in++){
                     hojaTrabajo.addCell(titulos[in]);
                 }
-                
-                for(int i=1; i<= diaSimulacion;i++){
-                    
-                    System.out.println("Dia Simulacion:"+ i); 
+                datos[0]=0;
+                for(int i=1; i<= diaSimulacion;i++){ 
                     //LLego orden?
-                    
                     inventario.VerificarOrden(i);
-                    System.out.println("Inv Inicial:"+inventario.getInicial());
-                    
-                    if(inventario.getInicial()>0){
-                        inventario.VerificarColaClientes(i);
-                    }
+                    //Atender clientes en espera
+                    inventario.VerificarColaClientes(i);
                     
                     //Escritura en Excel
                     hojaTrabajo.addCell(new Number(0, i, i));
                     hojaTrabajo.addCell(new Number(1,i, inventario.getInicial()));
                     hojaTrabajo.addCell(new Number(2,i, alDemanda.get(i-1)));
     
-                    if(datos[0] > Integer.parseInt(hojaTrabajo.getCell(1, i).getContents())){
+                    if(datos[0] > Integer.parseInt(hojaTrabajo.getCell(1, i).getContents()) || datos[0]==0){
                         for(int l=0; l<alEspera.size();l++){
                             if(alEspera.get(l)!=0.0){
                                 hojaTrabajo.addCell(new Number(10,i, alEspera.get(l)));
@@ -138,7 +127,6 @@ public class Simulacion{
                             }
                         }
                     }
-                    
                     datos = inventario.ActualizarInventario(i, tDemanda, tEspera, 1);
                     
                     hojaTrabajo.addCell(new Number(3,i, datos[0]));
@@ -155,10 +143,8 @@ public class Simulacion{
                         hojaTrabajo.addCell(new Number(8,i, alEntrega.get(inventario.getOrden().getNumero()-1)));
                         hojaTrabajo.addCell(new Number(9,i, inventario.getOrden().getTiempoEntrega()-i-1));
                     }
-                    System.out.println("-------------------");
-
+              
                 }
-                
                 inventario.TCostoInventario(inventario.getPromedio());
                 inventario.TCostoconEspera(inventario.getSatisfecho());
                 inventario.TCostosinEspera(inventario.getInsatisfecho());
@@ -207,9 +193,9 @@ public class Simulacion{
                             if(inventario.getColaEspera()!=null && inventario.getColaEspera().size()!=1){
                                 Collections.sort(inventario.getColaEspera());
                             }
-                            if(inventario.getInicial()>0){
-                                inventario.VerificarColaClientes(i);
-                            }
+                            
+                            inventario.VerificarColaClientes(k);
+                            
                             
                             inventario.ActualizarInventario(k, tDemanda, tEspera,0);
                             inventario.GenerarOrden(k, tEntrega,0);
@@ -235,7 +221,6 @@ public class Simulacion{
                     }
                    
                 } 
-
                 //Construcción de la tabla de Eventos para el costo minimo
                 for(int k=1; k<= diaSimulacion;k++){              
                     //LLego orden?
@@ -244,9 +229,8 @@ public class Simulacion{
                     if(inventario.getColaEspera()!=null && inventario.getColaEspera().size()!=1){
                         Collections.sort(inventario.getColaEspera());
                     }
-                    if(inventario.getInicial()>0){
-                        inventario.VerificarColaClientes(k);
-                    }
+                    inventario.VerificarColaClientes(k);
+                    
                     //Escritura en Excel
                     hojaTrabajo.addCell(new jxl.write.Number(0, k, k));
                     hojaTrabajo.addCell(new jxl.write.Number(1,k, inventario.getInicial()));
