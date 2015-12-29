@@ -34,7 +34,6 @@ public class Simulacion{
     public static List<Double> alEntrega =  new ArrayList<Double>();
 
     public void iniciarSim (String direccion) throws IOException, WriteException{
-        Ventana interfaz;
         Archivo objeto = null;
         List<Tabla> tDemanda = null, tEntrega = null, tEspera = null;
         tDemanda = new ArrayList <Tabla>();
