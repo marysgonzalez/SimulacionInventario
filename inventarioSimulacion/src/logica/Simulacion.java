@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import javax.swing.JOptionPane;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.Number;
@@ -62,9 +63,13 @@ public class Simulacion{
             archivo = new File (ruta);
             WritableWorkbook excel = Workbook.createWorkbook(archivo); 
             WritableSheet hojaTrabajo = excel.createSheet("TotalCostos", 0);
-            
-            
+
             if(alDemanda!=null && alEntrega!=null && alEspera!=null){
+                
+                if(alDemanda.size() != diaSim || alEspera.size() !=diaSim || alEntrega.size()!=diaSim){
+                    JOptionPane.showMessageDialog(null, "Numeros aleatorios insuficientes. Cantidad debe corresponder a los dias de simulacion.");
+                    System.exit(0);
+                }
                 System.out.println("Archivo de prueba");
                 diaSimulacion = diaSim;
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
@@ -102,7 +107,7 @@ public class Simulacion{
                 for (int in=0;in<titulos.length; in++){
                     hojaTrabajo.addCell(titulos[in]);
                 }
-                datos[0]=0;
+                datos[1]=0;
                 for(int i=1; i<= diaSimulacion;i++){ 
                     //LLego orden?
                     inventario.VerificarOrden(i);
@@ -113,8 +118,8 @@ public class Simulacion{
                     hojaTrabajo.addCell(new Number(0, i, i));
                     hojaTrabajo.addCell(new Number(1,i, inventario.getInicial()));
                     hojaTrabajo.addCell(new Number(2,i, alDemanda.get(i-1)));
-    
-                    if(datos[0] > Integer.parseInt(hojaTrabajo.getCell(1, i).getContents()) || datos[0]==0){
+                    
+                    if(datos[0] > Integer.parseInt(hojaTrabajo.getCell(1, i).getContents())){
                         for(int l=0; l<alEspera.size();l++){
                             if(alEspera.get(l)!=0.0){
                                 hojaTrabajo.addCell(new Number(10,i, alEspera.get(l)));
@@ -122,8 +127,12 @@ public class Simulacion{
                             }
                         }
                     }
+                    double aux = alEspera.get(0);
                     datos = inventario.ActualizarInventario(i, tDemanda, tEspera, 1);
                     
+                    if(datos[1]!=0.0 && i==1){
+                        hojaTrabajo.addCell(new Number(10,i, aux));
+                    }
                     hojaTrabajo.addCell(new Number(3,i, datos[0]));
                     hojaTrabajo.addCell(new Number(4,i, inventario.getInicial()));
                     hojaTrabajo.addCell(new Number(5,i, ((Integer.parseInt(hojaTrabajo.getCell(1, i).getContents())+inventario.getInicial())/2)));
