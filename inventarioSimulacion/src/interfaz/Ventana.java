@@ -63,9 +63,9 @@ public class Ventana extends javax.swing.JFrame {
         insertDias.setVisible(false);
 
         getContentPane().setBackground(new Color(51,153,153));
-        icon = new ImageIcon(filePath + File.separator + "src" + File.separator + "interfaz" + File.separator + "icono.png");
+        icon = new ImageIcon(filePath + File.separator + "src" + File.separator + "interfaz" + File.separator + "images.jpg");
         iconLabel.setIcon(this.icon);
-        iconLabel.setBounds(0, 10, 300, 150);
+        iconLabel.setBounds(0, 0, 310, 180);
         iconLabel.setVisible(true);
         this.add(iconLabel);
         this.setTitle("Simulación de Inventario");
@@ -95,6 +95,7 @@ public class Ventana extends javax.swing.JFrame {
         setResizable(false);
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        titulo.setForeground(new java.awt.Color(255, 255, 255));
         titulo.setText("Nro. Días:");
 
         bAceptar.setText("Aceptar");
@@ -175,15 +176,12 @@ public class Ventana extends javax.swing.JFrame {
             this.setDireccion(fichero.getAbsolutePath());
             ejecucion = new Simulacion();
             try {
-                
                 File file = new File(this.getDireccion());
                 JAXBContext jaxbContext;
                 jaxbContext = JAXBContext.newInstance(Archivo.class);
 
                 Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
                 objeto = (Archivo) jaxbUnmarshaller.unmarshal(file);
-                
-                
                 
                 if (objeto.getNroAleatorioDemanda()!=null &&  objeto.getNroAleatorioEntrega()!=null && objeto.getNroAleatorioEspera()!=null){
                     titulo.setVisible(true);
