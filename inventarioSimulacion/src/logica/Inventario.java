@@ -210,13 +210,15 @@ public class Inventario {
                     if(this.getInicial() >= demanda){
                         this.setInicial(this.getInicial() - demanda);
                         this.setSatisfecho(demanda);
+//                        System.out.println("Satisfecho:"+this.getSatisfecho());
                         //Quitar cliente de la cola
                         this.colaEspera.remove(i);
                         i--;
-                    }else{
+                    }else if(this.getInicial()!=0){
                         //Vender todo lo que queda
                         demanda =demanda-this.getInicial();
                         this.setSatisfecho(this.getInicial());
+//                        System.out.println("Satisfecho:"+this.getSatisfecho());
 //                        System.out.println("No fue suficiente. Faltan:"+ demanda);
                         this.setInicial(0);
                         this.colaEspera.get(i).setDemanda(demanda);
@@ -229,7 +231,7 @@ public class Inventario {
                     i--;
                 }
             }
-            System.out.println("-------------------");
+//            System.out.println("-------------------");
         }
          
     }

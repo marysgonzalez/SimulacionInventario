@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.Number;
@@ -26,7 +27,8 @@ public class Simulacion{
     public static List<Double> alDemanda =  new ArrayList<Double>();
     public static List<Double> alEspera =  new ArrayList<Double>();
     public static List<Double> alEntrega =  new ArrayList<Double>();
-
+    public static Random numeroAleatorio =  new Random();
+    
     public void iniciarSim (Archivo objeto, int diaSim) throws IOException, WriteException{
         List<Tabla> tDemanda = null, tEntrega = null, tEspera = null;
         tDemanda = new ArrayList <Tabla>();
@@ -203,6 +205,7 @@ public class Simulacion{
                     for (int j = MinPR; j<=MaxPR; j++){
                         //Asignar R
                         inventario.setPuntoReorden(j);
+                        numeroAleatorio.setSeed(100);
                         //Simulacion de 365 dias
                         for(int k=1; k<= diaSimulacion;k++){              
                             //LLego orden?
@@ -220,11 +223,11 @@ public class Simulacion{
 
                         }
                         tCosto = 0.0;
-                        tCosto= inventario.getTCostoconEspera()
-                        +inventario.getTCostosinEspera()
-                        +inventario.getTcostoInventario()
-                        +inventario.getTcostoOrden();
-                        //System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
+                        inventario.TCostoInventario(inventario.getPromedio());
+                        inventario.TCostoconEspera(inventario.getSatisfecho());
+                        inventario.TCostosinEspera(inventario.getInsatisfecho());
+                        tCosto = inventario.getTCostoconEspera()+inventario.getTCostosinEspera()+inventario.getTcostoInventario()+inventario.getTcostoOrden();
+                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
                         //Limpiar las variables de la clase
                         inventario.limpiarInventario(objeto.getInvInicial());
                         //Conocer el minimo costo de la lista con su Q y R
@@ -239,6 +242,9 @@ public class Simulacion{
                    
                 } 
                 //Construcción de la tabla de Eventos para el costo minimo
+                inventario.getOrden().setCantidad(qMin);
+                inventario.setPuntoReorden(rMin);
+                numeroAleatorio.setSeed(100);
                 for(int k=1; k<= diaSimulacion;k++){              
                     //LLego orden?
                     inventario.VerificarOrden(k);
@@ -287,8 +293,8 @@ public class Simulacion{
                 hojaTrabajo.addCell(new Number(1,diaSimulacion+5, (inventario.getTCostoconEspera()+inventario.getTCostosinEspera())));
                 hojaTrabajo.addCell(new Number(1,diaSimulacion+6, inventario.getTcostoOrden()));
                 hojaTrabajo.addCell(new Number(1,diaSimulacion+7, tCosto));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+8, MinQ));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+9, MinPR));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+8, qMin));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+9, rMin));
                 
                 excel.write();
                 excel.close();

@@ -20,7 +20,7 @@ public class Tabla{
      */
     private int valor;
     private double probabilidad;
-
+    
     public Tabla() {
         this.valor = 0;
         this.probabilidad = 0;
@@ -54,9 +54,9 @@ public class Tabla{
      * @return 
      */
     public int UbicarEnTabla(List<Tabla> lista, int opcion, double aleatorio, int tipo){
-        Random numeroAleatorio;
+//        Random numeroAleatorio;
         double num;
-        numeroAleatorio = new Random();
+//        numeroAleatorio = new Random();
         NumberFormat deci = NumberFormat.getNumberInstance(Locale.UK);
         deci.setMaximumFractionDigits(3);
         if(opcion==0){
