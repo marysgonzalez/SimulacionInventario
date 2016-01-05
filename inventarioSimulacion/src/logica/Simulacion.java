@@ -5,20 +5,15 @@
  */
 package logica;
 
-import interfaz.Ventana;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import jxl.Workbook;
-import jxl.write.Colour;
 import jxl.write.Label;
 import jxl.write.Number;
-import jxl.write.Pattern;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
@@ -26,16 +21,13 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 
 
-
 public class Simulacion{
-    static int diaSimulacion = 365;
+    static int diaSimulacion = 0;
     public static List<Double> alDemanda =  new ArrayList<Double>();
     public static List<Double> alEspera =  new ArrayList<Double>();
     public static List<Double> alEntrega =  new ArrayList<Double>();
 
-    public void iniciarSim (String direccion) throws IOException, WriteException{
-        Ventana interfaz;
-        Archivo objeto = null;
+    public void iniciarSim (Archivo objeto, int diaSim) throws IOException, WriteException{
         List<Tabla> tDemanda = null, tEntrega = null, tEspera = null;
         tDemanda = new ArrayList <Tabla>();
         tEntrega = new ArrayList <Tabla>();
@@ -44,16 +36,11 @@ public class Simulacion{
         int MinQ = 0, MaxQ = 0, qMin = 0;
         int MinPR = 0, MaxPR = 0, rMin = 0;
         Double tCosto = 0.0;
+        String filePath = new File("").getAbsolutePath();
+        String ruta = "";
+        File archivo;
         
-        
-        try {    
-            File file = new File(direccion);
-            JAXBContext jaxbContext;
-            jaxbContext = JAXBContext.newInstance(Archivo.class);
-            
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            objeto = (Archivo) jaxbUnmarshaller.unmarshal(file);
-            
+           
            // Calcular las prob acumuladas
             objeto.calcularProbAcum(objeto.getDemanda());
             objeto.calcularProbAcum(objeto.getTiempoEspera());
@@ -69,13 +56,15 @@ public class Simulacion{
             alEntrega = objeto.getNroAleatorioEntrega();
             alEspera = objeto.getNroAleatorioEspera();
             
-            WritableWorkbook excel = Workbook.createWorkbook(new File("C:\\Users\\Toshiba PC\\Desktop\\tablaEventos.xls")); 
+            ruta = filePath + File.separator + "src" + File.separator + "archivoExcel" + File.separator + "tablaEventos.xls";
+            archivo = new File (ruta);
+            WritableWorkbook excel = Workbook.createWorkbook(archivo); 
             WritableSheet hojaTrabajo = excel.createSheet("TotalCostos", 0);
             
             
             if(alDemanda!=null && alEntrega!=null && alEspera!=null){
                 System.out.println("Archivo de prueba");
-                diaSimulacion = 15;
+                diaSimulacion = diaSim;
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
                 MinQ = 100;
                 MinPR = 75;
@@ -85,9 +74,8 @@ public class Simulacion{
                 System.out.println("Valor de q:"+ inventario.getOrden().getCantidad());
                 System.out.println("Punto de Reorden:"+inventario.getPuntoReorden());
                 System.out.println("--------------------------");
-//                
+                
                 //Cabecera del archivo Excel
-
                 Label[] titulos = new Label[18];
                 titulos[0] = new Label(0,0,"Dia",getCellFormat(jxl.format.Colour.GREEN));
                 titulos[1] = new Label(1,0,"Inv. Inicial",getCellFormat(jxl.format.Colour.GREEN));
@@ -173,8 +161,33 @@ public class Simulacion{
                 excel.write();
                 excel.close();
                 
-//              
             }else{
+                diaSimulacion = diaSim;
+                Label[] titulos = new Label[18];
+                titulos[0] = new Label(0,0,"Dia",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[1] = new Label(1,0,"Inv. Inicial",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[2] = new Label(2,0,"Nro. Alea. Dem.",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[3] = new Label(3,0,"Demanda",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[4] = new Label(4,0,"Inv. Final",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[5] = new Label(5,0,"Inv. Prom",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[6] = new Label(6,0,"Faltante",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[7] = new Label(7,0,"Nro. Orden",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[8] = new Label(8,0,"Nro. Alea. T_Entrega",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[9] = new Label(9,0,"Tiempo Entrega",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[10] = new Label(10,0,"Nro. Alea. T_Espera",getCellFormat(jxl.format.Colour.GREEN));
+                titulos[11] = new Label(11,0,"Tiempo Espera",getCellFormat(jxl.format.Colour.GREEN));
+                
+                titulos[12] = new Label(0,diaSimulacion+4,"Costo de Inventario");
+                titulos[13] = new Label(0,diaSimulacion+5,"Costo Faltante");
+                titulos[14] = new Label(0,diaSimulacion+6,"Costo de Orden");
+                titulos[15] = new Label(0,diaSimulacion+7,"Costo Total", getCellFormat(null)); 
+                titulos[16] = new Label(0,diaSimulacion+8,"Q", getCellFormat(null));
+                titulos[17] = new Label(0,diaSimulacion+9,"PR", getCellFormat(null));
+                
+                for (int in=0;in<titulos.length; in++){
+                    hojaTrabajo.addCell(titulos[in]);
+                }
+                
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
                 alDemanda = new ArrayList<Double>();
                 alEspera = new ArrayList<Double>();
@@ -220,7 +233,7 @@ public class Simulacion{
                         +inventario.getTCostosinEspera()
                         +inventario.getTcostoInventario()
                         +inventario.getTcostoOrden();
-                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
+                        //System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
                         //Limpiar las variables de la clase
                         inventario.limpiarInventario(objeto.getInvInicial());
                         //Conocer el minimo costo de la lista con su Q y R
@@ -228,8 +241,7 @@ public class Simulacion{
                             minC = tCosto;
                             qMin = i;
                             rMin = j;
-                            System.out.println("Costo Minimo (Lista): "+minC+" >> Q: "+i+" R: "+j);
-                            
+                            //System.out.println("Costo Minimo (Lista): "+minC+" >> Q: "+i+" R: "+j); 
                         }
                         
                     }
@@ -278,11 +290,25 @@ public class Simulacion{
                         hojaTrabajo.addCell(new jxl.write.Number(9,k, inventario.getOrden().getTiempoEntrega()-k-1));
                     }
                 }
+                inventario.TCostoInventario(inventario.getPromedio());
+                inventario.TCostoconEspera(inventario.getSatisfecho());
+                inventario.TCostosinEspera(inventario.getInsatisfecho());
+                tCosto = inventario.getTCostoconEspera()+inventario.getTCostosinEspera()+inventario.getTcostoInventario()+inventario.getTcostoOrden();
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+4, inventario.getTcostoInventario()));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+5, (inventario.getTCostoconEspera()+inventario.getTCostosinEspera())));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+6, inventario.getTcostoOrden()));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+7, tCosto));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+8, MinQ));
+                hojaTrabajo.addCell(new Number(1,diaSimulacion+9, MinPR));
+                
+                excel.write();
+                excel.close();
             }
-   
-        } catch (JAXBException ex) {
-            System.out.println("Error en Lectura");
-        }
+            
+            if(archivo.exists() && !archivo.isDirectory()) { 
+                Desktop dt = Desktop.getDesktop();
+                dt.open(new File(ruta));
+            }
     }
     
     private static WritableCellFormat getCellFormat(jxl.format.Colour colour) throws WriteException {
