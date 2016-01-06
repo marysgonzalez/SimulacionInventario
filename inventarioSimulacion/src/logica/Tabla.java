@@ -72,14 +72,15 @@ public class Tabla{
             num = aleatorio;
         }
         //Recorrer la lista de probabilidades acumuladas
-//        System.out.println("Numero Aleatorio: "+num);
+//        num = 0.69;
+//        System.out.println("Numero:"+num);
         for(int i=0; i<lista.size(); i++){
             //El primer elemento
             if(i==0 && num>=0 && num<lista.get(i).getProbabilidad()){
                 return lista.get(i).getValor();
-            }else if(i+1<lista.size() && lista.get(i).getProbabilidad()>=num && num<lista.get(i+1).getProbabilidad()){
+            }else if(i!=0 && num>=lista.get(i-1).getProbabilidad() && num<lista.get(i).getProbabilidad()){
                 return lista.get(i).getValor();              
-            }else if(i+1==lista.size() && lista.get(i).getProbabilidad()>=num){
+            }else if(i+1==lista.size() && num>=lista.get(i-1).getProbabilidad()){
                 return lista.get(i).getValor();
             }
         }
