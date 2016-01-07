@@ -246,6 +246,7 @@ public class Inventario {
         int InvFinal = 0, InvInicial=0;
         int demanda = 0;
         int tabla[] = new int[2];
+        tabla[0] = tabla[1] = 0;
         double aleatorio;
         if(opcion==1){
             aleatorio = this.GenerarNumeroAleatorio(1, diaSimulacion-1);
@@ -253,7 +254,7 @@ public class Inventario {
         }else{
             demanda = tDemanda.get(0).UbicarEnTabla(tDemanda, 0, 0,1);
         }
-//        System.out.println("Demanda:"+demanda);
+        tabla[0] = demanda;
         InvInicial = this.getInicial();
         if(InvInicial>0){
             //Si se puede satisfacer la demanda del cliente
@@ -282,8 +283,6 @@ public class Inventario {
                 tabla[1] = this.GenerarEspera(tEspera, diaSimulacion, demanda, 0);
             }
         }
-//         System.out.println("Inventario Final:"+this.getInicial());
-         tabla[0] = demanda;
          return tabla;
     }
     /**
@@ -314,7 +313,7 @@ public class Inventario {
                 aleatorio = this.GenerarNumeroAleatorio(3,0);
                 diaEntrega = tEntrega.get(0).UbicarEnTabla(tEntrega, 3, aleatorio,3);
             }else{
-                diaEntrega = tEntrega.get(0).UbicarEnTabla(tEntrega, opcion, 0,3);
+                diaEntrega = tEntrega.get(0).UbicarEnTabla(tEntrega, opcion, 0, 3);
             }  
 //            System.out.println("Dia para la orden:"+diaEntrega);
             this.getOrden().setTiempoEntrega(diaSimulacion+diaEntrega+1);
@@ -340,7 +339,7 @@ public class Inventario {
             aleatorio = this.GenerarNumeroAleatorio(2,0);
             diaEspera = tEspera.get(0).UbicarEnTabla(tEspera, 2, aleatorio,2);
         }else{
-            diaEspera = tEspera.get(0).UbicarEnTabla(tEspera, 0, 0,2);
+            diaEspera = tEspera.get(0).UbicarEnTabla(tEspera, 0, 0, 2);
         }
         InvFinal = demanda-this.getInicial();
         if(diaEspera!=0){

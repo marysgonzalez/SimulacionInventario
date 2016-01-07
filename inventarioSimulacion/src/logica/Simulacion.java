@@ -83,30 +83,8 @@ public class Simulacion{
                 System.out.println("--------------------------");
                 
                 //Cabecera del archivo Excel
-                Label[] titulos = new Label[18];
-                titulos[0] = new Label(0,0,"Dia",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[1] = new Label(1,0,"Inv. Inicial",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[2] = new Label(2,0,"Nro. Alea. Dem.",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[3] = new Label(3,0,"Demanda",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[4] = new Label(4,0,"Inv. Final",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[5] = new Label(5,0,"Inv. Prom",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[6] = new Label(6,0,"Faltante",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[7] = new Label(7,0,"Nro. Orden",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[8] = new Label(8,0,"Nro. Alea. T_Entrega",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[9] = new Label(9,0,"Tiempo Entrega",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[10] = new Label(10,0,"Nro. Alea. T_Espera",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[11] = new Label(11,0,"Tiempo Espera",getCellFormat(jxl.format.Colour.GREEN));
-                
-                titulos[12] = new Label(0,diaSimulacion+4,"Costo de Inventario");
-                titulos[13] = new Label(0,diaSimulacion+5,"Costo Faltante");
-                titulos[14] = new Label(0,diaSimulacion+6,"Costo de Orden");
-                titulos[15] = new Label(0,diaSimulacion+7,"Costo Total", getCellFormat(null)); 
-                titulos[16] = new Label(0,diaSimulacion+8,"Q", getCellFormat(null));
-                titulos[17] = new Label(0,diaSimulacion+9,"PR", getCellFormat(null));
-                
-                for (int in=0;in<titulos.length; in++){
-                    hojaTrabajo.addCell(titulos[in]);
-                }
+                formatoArchivo(hojaTrabajo);
+
                 datos[1]=0;
                 for(int i=1; i<= diaSimulacion;i++){ 
                     //LLego orden?
@@ -165,31 +143,7 @@ public class Simulacion{
                 
             }else{
                 diaSimulacion = diaSim;
-                Label[] titulos = new Label[18];
-                titulos[0] = new Label(0,0,"Dia",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[1] = new Label(1,0,"Inv. Inicial",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[2] = new Label(2,0,"Nro. Alea. Dem.",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[3] = new Label(3,0,"Demanda",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[4] = new Label(4,0,"Inv. Final",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[5] = new Label(5,0,"Inv. Prom",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[6] = new Label(6,0,"Faltante",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[7] = new Label(7,0,"Nro. Orden",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[8] = new Label(8,0,"Nro. Alea. T_Entrega",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[9] = new Label(9,0,"Tiempo Entrega",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[10] = new Label(10,0,"Nro. Alea. T_Espera",getCellFormat(jxl.format.Colour.GREEN));
-                titulos[11] = new Label(11,0,"Tiempo Espera",getCellFormat(jxl.format.Colour.GREEN));
-                
-                titulos[12] = new Label(0,diaSimulacion+4,"Costo de Inventario");
-                titulos[13] = new Label(0,diaSimulacion+5,"Costo Faltante");
-                titulos[14] = new Label(0,diaSimulacion+6,"Costo de Orden");
-                titulos[15] = new Label(0,diaSimulacion+7,"Costo Total", getCellFormat(null)); 
-                titulos[16] = new Label(0,diaSimulacion+8,"Q", getCellFormat(null));
-                titulos[17] = new Label(0,diaSimulacion+9,"PR", getCellFormat(null));
-                
-                for (int in=0;in<titulos.length; in++){
-                    hojaTrabajo.addCell(titulos[in]);
-                }
-                
+                formatoArchivo(hojaTrabajo);
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
                 alDemanda = new ArrayList<Double>();
                 alEspera = new ArrayList<Double>();
@@ -236,7 +190,7 @@ public class Simulacion{
                         inventario.TCostoconEspera(inventario.getSatisfecho());
                         inventario.TCostosinEspera(inventario.getInsatisfecho());
                         tCosto = inventario.getTCostoconEspera()+inventario.getTCostosinEspera()+inventario.getTcostoInventario()+inventario.getTcostoOrden();
-                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
+//                        System.out.println("Costo Total: (Q): "+i+" (R): "+j+"   "+(tCosto));
                         //Limpiar las variables de la clase
                         inventario.limpiarInventario(objeto.getInvInicial());
                         //Conocer el minimo costo de la lista con su Q y R
@@ -251,6 +205,9 @@ public class Simulacion{
                    
                 } 
                 //Construcción de la tabla de Eventos para el costo minimo
+                alDemanda.clear();
+                alEntrega.clear();
+                alEspera.clear();
                 inventario.getOrden().setCantidad(qMin);
                 inventario.setPuntoReorden(rMin);
                 numeroAleatorio.setSeed(100);
@@ -266,24 +223,38 @@ public class Simulacion{
                     //Escritura en Excel
                     hojaTrabajo.addCell(new jxl.write.Number(0, k, k));
                     hojaTrabajo.addCell(new jxl.write.Number(1,k, inventario.getInicial()));
-                    hojaTrabajo.addCell(new jxl.write.Number(2,k, alDemanda.get(k-1)));
-    
-                    if(datos[0] > Integer.parseInt(hojaTrabajo.getCell(1, k).getContents())){
-                        for(int l=0; l<alEspera.size();l++){
-                            if(alEspera.get(l)!=0.0){
-                                hojaTrabajo.addCell(new jxl.write.Number(10,k, alEspera.get(l)));
-                                break;
-                            }
-                        }
-                    }
-
-                    datos = inventario.ActualizarInventario(k,tDemanda, tEspera, 0);
                     
+//                    if(datos[0] > Integer.parseInt(hojaTrabajo.getCell(1, k).getContents())){
+//                        for(int l=0; l<alEspera.size();l++){
+//                            if(alEspera.get(l)!=0.0){
+//                                System.out.println("K: "+k+" L: "+l);
+//                                hojaTrabajo.addCell(new jxl.write.Number(10,k, alEspera.get(l)));
+//                                alEspera.set(l, 0.0);
+//                                break;
+//                            }
+//                        }
+//                    }
+                    datos = inventario.ActualizarInventario(k,tDemanda, tEspera, 0);
+//                    if(!alEspera.isEmpty()){
+//                        double aux = alEspera.get(0);
+//                        if(datos[1]!=0.0 && k==1){
+//                            hojaTrabajo.addCell(new Number(10,k, aux));
+//                        }
+//                    }
+                    hojaTrabajo.addCell(new jxl.write.Number(2,k, alDemanda.get(k-1)));
+
                     hojaTrabajo.addCell(new jxl.write.Number(3,k, datos[0]));
                     hojaTrabajo.addCell(new jxl.write.Number(4,k, inventario.getInicial()));
                     hojaTrabajo.addCell(new jxl.write.Number(5,k, ((Integer.parseInt(hojaTrabajo.getCell(1, k).getContents())+inventario.getInicial())/2)));
-                    
+                    //Demanda es mayor que el inv. inicial
                     if(datos[0] > Integer.parseInt(hojaTrabajo.getCell(1, k).getContents())){
+                         for(int l=0; l<alEspera.size();l++){
+                            if(alEspera.get(l)!=0.0){
+                                hojaTrabajo.addCell(new jxl.write.Number(10,k, alEspera.get(l)));
+                                alEspera.set(l, 0.0);
+                                break;
+                            }
+                        }
                         hojaTrabajo.addCell(new jxl.write.Number(6,k, datos[0] - Integer.parseInt(hojaTrabajo.getCell(1, k).getContents())));
                         hojaTrabajo.addCell(new jxl.write.Number(11,k, datos[1]));
                     }
@@ -330,6 +301,33 @@ public class Simulacion{
         }
         
     return cellFormat;
+    }
+    
+    private void formatoArchivo(WritableSheet hojaTrabajo) throws WriteException{
+        Label[] titulos = new Label[18];
+        titulos[0] = new Label(0,0,"Dia",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[1] = new Label(1,0,"Inv. Inicial",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[2] = new Label(2,0,"Nro. Alea. Dem.",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[3] = new Label(3,0,"Demanda",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[4] = new Label(4,0,"Inv. Final",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[5] = new Label(5,0,"Inv. Prom",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[6] = new Label(6,0,"Faltante",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[7] = new Label(7,0,"Nro. Orden",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[8] = new Label(8,0,"Nro. Alea. T_Entrega",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[9] = new Label(9,0,"Tiempo Entrega",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[10] = new Label(10,0,"Nro. Alea. T_Espera",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[11] = new Label(11,0,"Tiempo Espera",getCellFormat(jxl.format.Colour.GREEN));
+
+        titulos[12] = new Label(0,diaSimulacion+4,"Costo de Inventario");
+        titulos[13] = new Label(0,diaSimulacion+5,"Costo Faltante");
+        titulos[14] = new Label(0,diaSimulacion+6,"Costo de Orden");
+        titulos[15] = new Label(0,diaSimulacion+7,"Costo Total", getCellFormat(null)); 
+        titulos[16] = new Label(0,diaSimulacion+8,"Q", getCellFormat(null));
+        titulos[17] = new Label(0,diaSimulacion+9,"PR", getCellFormat(null));
+
+        for (int in=0;in<titulos.length; in++){
+            hojaTrabajo.addCell(titulos[in]);
+        }
     }
     
 }
