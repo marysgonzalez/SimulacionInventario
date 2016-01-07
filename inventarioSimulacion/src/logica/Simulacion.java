@@ -83,7 +83,7 @@ public class Simulacion{
                 System.out.println("--------------------------");
                 
                 //Cabecera del archivo Excel
-                formatoArchivo(hojaTrabajo);
+                titulosArchivo(hojaTrabajo);
 
                 datos[1]=0;
                 for(int i=1; i<= diaSimulacion;i++){ 
@@ -131,19 +131,15 @@ public class Simulacion{
                 inventario.TCostoconEspera(inventario.getSatisfecho());
                 inventario.TCostosinEspera(inventario.getInsatisfecho());
                 tCosto = inventario.getTCostoconEspera()+inventario.getTCostosinEspera()+inventario.getTcostoInventario()+inventario.getTcostoOrden();
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+4, inventario.getTcostoInventario()));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+5, (inventario.getTCostoconEspera()+inventario.getTCostosinEspera())));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+6, inventario.getTcostoOrden()));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+7, tCosto));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+8, MinQ));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+9, MinPR));
+
+                mostrarCostos(hojaTrabajo, inventario, tCosto, MinQ, MinPR);
                 //Cerrar y escribir archivo Excel
                 excel.write();
                 excel.close();
                 
             }else{
                 diaSimulacion = diaSim;
-                formatoArchivo(hojaTrabajo);
+                titulosArchivo(hojaTrabajo);
                 Inventario inventario = new Inventario(objeto.getCostoOrden(),objeto.getCostoInv(),objeto.getCostoEspera(),objeto.getCostoSinEspera(), objeto.getInvInicial());
                 alDemanda = new ArrayList<Double>();
                 alEspera = new ArrayList<Double>();
@@ -235,12 +231,12 @@ public class Simulacion{
 //                        }
 //                    }
                     datos = inventario.ActualizarInventario(k,tDemanda, tEspera, 0);
-//                    if(!alEspera.isEmpty()){
-//                        double aux = alEspera.get(0);
-//                        if(datos[1]!=0.0 && k==1){
-//                            hojaTrabajo.addCell(new Number(10,k, aux));
-//                        }
-//                    }
+                    if(!alEspera.isEmpty()){
+                        double aux = alEspera.get(0);
+                        if(datos[1]!=0.0 && k==1){
+                            hojaTrabajo.addCell(new Number(10,k, aux));
+                        }
+                    }
                     hojaTrabajo.addCell(new jxl.write.Number(2,k, alDemanda.get(k-1)));
 
                     hojaTrabajo.addCell(new jxl.write.Number(3,k, datos[0]));
@@ -269,12 +265,8 @@ public class Simulacion{
                 inventario.TCostoconEspera(inventario.getSatisfecho());
                 inventario.TCostosinEspera(inventario.getInsatisfecho());
                 tCosto = inventario.getTCostoconEspera()+inventario.getTCostosinEspera()+inventario.getTcostoInventario()+inventario.getTcostoOrden();
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+4, inventario.getTcostoInventario()));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+5, (inventario.getTCostoconEspera()+inventario.getTCostosinEspera())));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+6, inventario.getTcostoOrden()));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+7, tCosto));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+8, qMin));
-                hojaTrabajo.addCell(new Number(1,diaSimulacion+9, rMin));
+               
+                mostrarCostos(hojaTrabajo, inventario, tCosto, qMin, rMin);
                 
                 excel.write();
                 excel.close();
@@ -332,6 +324,23 @@ public class Simulacion{
         for (int in=0;in<titulos.length; in++){
             hojaTrabajo.addCell(titulos[in]);
         }
+    }
+    /**
+     * 
+     * @param hojaTrabajo hoja de excel
+     * @param inventario 
+     * @param tCosto costo total
+     * @param MinQ  minimo de q
+     * @param MinPR minimo de pr
+     * @throws WriteException 
+     */
+    private void mostrarCostos(WritableSheet hojaTrabajo, Inventario inventario, double tCosto, int MinQ, int MinPR) throws WriteException{
+        hojaTrabajo.addCell(new Number(1,diaSimulacion+4, inventario.getTcostoInventario()));
+        hojaTrabajo.addCell(new Number(1,diaSimulacion+5, (inventario.getTCostoconEspera()+inventario.getTCostosinEspera())));
+        hojaTrabajo.addCell(new Number(1,diaSimulacion+6, inventario.getTcostoOrden()));
+        hojaTrabajo.addCell(new Number(1,diaSimulacion+7, tCosto));
+        hojaTrabajo.addCell(new Number(1,diaSimulacion+8, MinQ));
+        hojaTrabajo.addCell(new Number(1,diaSimulacion+9, MinPR));
     }
     
 }

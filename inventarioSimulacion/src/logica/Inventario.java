@@ -375,6 +375,7 @@ public class Inventario {
                 for(int i=0; i<alEspera.size();i++){
                     if(alEspera.get(i)!=0.0){
                         numero = alEspera.get(i);
+//                        alEspera.remove(i);
                         alEspera.set(i,0.0);
                         return numero;
                     }
