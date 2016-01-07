@@ -60,6 +60,10 @@ public class Ventana extends javax.swing.JFrame {
         initComponents();
         bAceptar.setVisible(false);
         titulo.setVisible(false);
+        titulo2.setVisible(false);
+        titulo3.setVisible(false);
+        nroQ.setVisible(false);
+        nroR.setVisible(false);
         insertDias.setVisible(false);
 
         getContentPane().setBackground(new Color(51,153,153));
@@ -85,6 +89,10 @@ public class Ventana extends javax.swing.JFrame {
         titulo = new javax.swing.JLabel();
         insertDias = new javax.swing.JTextField();
         bAceptar = new javax.swing.JButton();
+        nroQ = new javax.swing.JTextField();
+        nroR = new javax.swing.JTextField();
+        titulo2 = new javax.swing.JLabel();
+        titulo3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -104,6 +112,14 @@ public class Ventana extends javax.swing.JFrame {
                 bAceptarMouseClicked(evt);
             }
         });
+
+        titulo2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        titulo2.setForeground(new java.awt.Color(255, 255, 255));
+        titulo2.setText("Cant. Orden: ");
+
+        titulo3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        titulo3.setForeground(new java.awt.Color(255, 255, 255));
+        titulo3.setText("Punto Reorden:");
 
         jMenu1.setText("Simulación");
 
@@ -139,16 +155,31 @@ public class Ventana extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(insertDias, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(titulo)))))
+                            .addComponent(titulo)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(insertDias, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(nroQ, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(titulo2))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(titulo3)
+                                        .addComponent(nroR, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(77, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titulo2)
+                    .addComponent(titulo3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nroQ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nroR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(titulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(insertDias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -161,6 +192,8 @@ public class Ventana extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
+        //Limpiamos el titulo del Label
+        titulo.setText("");
         //Creamos el objeto JFileChooser
         JFileChooser fc=new JFileChooser();
 
@@ -184,12 +217,17 @@ public class Ventana extends javax.swing.JFrame {
                 objeto = (Archivo) jaxbUnmarshaller.unmarshal(file);
                 
                 if (objeto.getNroAleatorioDemanda()!=null &&  objeto.getNroAleatorioEntrega()!=null && objeto.getNroAleatorioEspera()!=null){
+                    titulo.setText("Nro. de días de simulación: ");
                     titulo.setVisible(true);
+                    titulo2.setVisible(true);
+                    titulo3.setVisible(true);
+                    nroQ.setVisible(true);
+                    nroR.setVisible(true);
                     insertDias.setVisible(true);
                     bAceptar.setVisible(true);
                 }else{
                     try {
-                        ejecucion.iniciarSim(objeto, 365);
+                        ejecucion.iniciarSim(objeto, 365,0,0);
                         titulo.setText("Simulación Finalizada...");
                         titulo.setVisible(true);
                     } catch (IOException ex) {
@@ -214,22 +252,42 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void bAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAceptarMouseClicked
-        int dias = 0;
-        dias = Integer.parseInt(insertDias.getText());
-
-        try {
-            bAceptar.setVisible(false);
-            insertDias.setVisible(false);
-            ejecucion.iniciarSim(objeto, dias);
-            titulo.setText("Simulación Finalizada...");
-        } catch (IOException ex) {
-            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (WriteException ex) {
-            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+        if (validarCampos(nroQ.getText(), nroR.getText(), insertDias.getText()) == true){
+            try {
+                bAceptar.setVisible(false);
+                titulo.setVisible(false);
+                titulo2.setVisible(false);
+                titulo3.setVisible(false);
+                nroQ.setVisible(false);
+                nroR.setVisible(false);
+                insertDias.setVisible(false);
+                ejecucion.iniciarSim(objeto, Integer.parseInt(insertDias.getText()), Integer.parseInt(nroQ.getText()), Integer.parseInt(nroR.getText()));
+                titulo.setText("Simulación Finalizada...");
+                titulo.setVisible(true);
+            } catch (IOException ex) {
+                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (WriteException ex) {
+                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Error: Los campos deben ser numéricos.");
         }
-       
     }//GEN-LAST:event_bAceptarMouseClicked
 
+    private boolean validarCampos(String campo1, String campo2, String campo3){
+        double nro;
+        int dias;
+        try{
+            nro = Double.parseDouble(campo1);
+            nro = Double.parseDouble(campo2);
+            dias = Integer.parseInt(campo3);
+            
+        }catch (NumberFormatException n){
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -273,6 +331,10 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JTextField nroQ;
+    private javax.swing.JTextField nroR;
     private javax.swing.JLabel titulo;
+    private javax.swing.JLabel titulo2;
+    private javax.swing.JLabel titulo3;
     // End of variables declaration//GEN-END:variables
 }

@@ -30,14 +30,14 @@ public class Simulacion{
     public static List<Double> alEntrega =  new ArrayList<Double>();
     public static Random numeroAleatorio =  new Random();
     
-    public void iniciarSim (Archivo objeto, int diaSim) throws IOException, WriteException{
+    public void iniciarSim (Archivo objeto, int diaSim, int MinQ, int MinPR) throws IOException, WriteException{
         List<Tabla> tDemanda = null, tEntrega = null, tEspera = null;
         tDemanda = new ArrayList <Tabla>();
         tEntrega = new ArrayList <Tabla>();
         tEspera = new ArrayList <Tabla>();
         int datos[] = new int[2];
-        int MinQ = 0, MaxQ = 0, qMin = 0;
-        int MinPR = 0, MaxPR = 0, rMin = 0;
+        int MaxQ = 0, qMin = 0;
+        int MaxPR = 0, rMin = 0;
         Double tCosto = 0.0;
         String filePath = new File("").getAbsolutePath();
         String ruta = "";
@@ -304,7 +304,7 @@ public class Simulacion{
     }
     
     private void formatoArchivo(WritableSheet hojaTrabajo) throws WriteException{
-        Label[] titulos = new Label[18];
+        Label[] titulos = new Label[23];
         titulos[0] = new Label(0,0,"Dia",getCellFormat(jxl.format.Colour.GREEN));
         titulos[1] = new Label(1,0,"Inv. Inicial",getCellFormat(jxl.format.Colour.GREEN));
         titulos[2] = new Label(2,0,"Nro. Alea. Dem.",getCellFormat(jxl.format.Colour.GREEN));
@@ -317,13 +317,17 @@ public class Simulacion{
         titulos[9] = new Label(9,0,"Tiempo Entrega",getCellFormat(jxl.format.Colour.GREEN));
         titulos[10] = new Label(10,0,"Nro. Alea. T_Espera",getCellFormat(jxl.format.Colour.GREEN));
         titulos[11] = new Label(11,0,"Tiempo Espera",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[12] = new Label(12,0,"Costo de Inventario",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[13] = new Label(13,0,"Costo Faltante",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[14] = new Label(14,0,"Costo de Orden",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[15] = new Label(15,0,"Costo Total",getCellFormat(jxl.format.Colour.GREEN));
 
-        titulos[12] = new Label(0,diaSimulacion+4,"Costo de Inventario");
-        titulos[13] = new Label(0,diaSimulacion+5,"Costo Faltante");
-        titulos[14] = new Label(0,diaSimulacion+6,"Costo de Orden");
-        titulos[15] = new Label(0,diaSimulacion+7,"Costo Total", getCellFormat(null)); 
-        titulos[16] = new Label(0,diaSimulacion+8,"Q", getCellFormat(null));
-        titulos[17] = new Label(0,diaSimulacion+9,"PR", getCellFormat(null));
+        titulos[16] = new Label(0,diaSimulacion+4,"Costo de Inventario", getCellFormat(null));
+        titulos[17] = new Label(0,diaSimulacion+5,"Costo Faltante", getCellFormat(null));
+        titulos[18] = new Label(0,diaSimulacion+6,"Costo de Orden", getCellFormat(null));
+        titulos[19] = new Label(0,diaSimulacion+7,"Costo Total", getCellFormat(null)); 
+        titulos[20] = new Label(0,diaSimulacion+8,"Q", getCellFormat(null));
+        titulos[21] = new Label(0,diaSimulacion+9,"PR", getCellFormat(null));
 
         for (int in=0;in<titulos.length; in++){
             hojaTrabajo.addCell(titulos[in]);
