@@ -8,6 +8,8 @@ package interfaz;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -20,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -35,8 +38,7 @@ public class Ventana extends javax.swing.JFrame {
     private Simulacion ejecucion;
     private Archivo objeto = null;
     private JPanel contentPane;
-    private JLabel iconLabel = new JLabel();
-    private ImageIcon icon;
+    private Image icono;
     private String direccion;
     private ImageIcon logo;
     private String filePath = new File("").getAbsolutePath();
@@ -62,16 +64,24 @@ public class Ventana extends javax.swing.JFrame {
         titulo.setVisible(false);
         titulo2.setVisible(false);
         titulo3.setVisible(false);
+        titulo4.setVisible(false);
+        titulo5.setVisible(false);
+        titulo6.setVisible(false);
+        titulo7.setVisible(false);
+        titulo8.setVisible(false);
+        titulo9.setVisible(false);
         nroQ.setVisible(false);
         nroR.setVisible(false);
         insertDias.setVisible(false);
-
-        getContentPane().setBackground(new Color(51,153,153));
-        icon = new ImageIcon(filePath + File.separator + "src" + File.separator + "interfaz" + File.separator + "images.jpg");
-        iconLabel.setIcon(this.icon);
-        iconLabel.setBounds(0, 0, 310, 180);
-        iconLabel.setVisible(true);
-        this.add(iconLabel);
+        inv.setVisible(false);
+        cInv.setVisible(false);
+        cOrden.setVisible(false);
+        cEs.setVisible(false);
+        cSES.setVisible(false);
+        
+        getContentPane().setBackground(new Color(175,169,201));
+        Image icono = new ImageIcon(filePath + File.separator + "src" + File.separator + "interfaz" + File.separator + "icono.png").getImage();
+        this.setIconImage(icono);
         this.setTitle("Simulación de Inventario");
         this.setLocation(30, 30);
         this.setVisible(true);
@@ -93,6 +103,24 @@ public class Ventana extends javax.swing.JFrame {
         nroR = new javax.swing.JTextField();
         titulo2 = new javax.swing.JLabel();
         titulo3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaEspera = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tablaDem = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tablaEntrega = new javax.swing.JTable();
+        titulo4 = new javax.swing.JLabel();
+        inv = new javax.swing.JLabel();
+        titulo5 = new javax.swing.JLabel();
+        cInv = new javax.swing.JLabel();
+        titulo6 = new javax.swing.JLabel();
+        cOrden = new javax.swing.JLabel();
+        cEs = new javax.swing.JLabel();
+        cSES = new javax.swing.JLabel();
+        titulo7 = new javax.swing.JLabel();
+        titulo8 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        titulo9 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -100,30 +128,116 @@ public class Ventana extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(93, 145, 255));
-        setResizable(false);
 
-        titulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        titulo.setForeground(new java.awt.Color(255, 255, 255));
-        titulo.setText("Nro. Días:");
+        titulo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        titulo.setText("Nro. de días de simulación:");
 
-        bAceptar.setText("Aceptar");
+        bAceptar.setText("Iniciar");
         bAceptar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bAceptarMouseClicked(evt);
             }
         });
 
-        titulo2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        titulo2.setForeground(new java.awt.Color(255, 255, 255));
+        titulo2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         titulo2.setText("Cant. Orden: ");
 
-        titulo3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        titulo3.setForeground(new java.awt.Color(255, 255, 255));
+        titulo3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         titulo3.setText("Punto Reorden:");
+
+        tablaEspera.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        tablaEspera.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Tiempo de Espera (días)", "Probabilidad"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tablaEspera);
+
+        tablaDem.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        tablaDem.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Demanda diaria (unid)", "Probabilidad"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tablaDem);
+
+        tablaEntrega.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        tablaEntrega.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Tiempo de Entrega (días)", "Probabilidad"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(tablaEntrega);
+
+        titulo4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        titulo4.setText("Inv. Inicial:");
+
+        inv.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        inv.setText("Valores");
+
+        titulo5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        titulo5.setText("Costo de Inventario:");
+
+        cInv.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cInv.setText("Valores");
+
+        titulo6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        titulo6.setText("Costo de Orden:");
+
+        cOrden.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cOrden.setText("Valores");
+
+        cEs.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cEs.setText("Valores");
+
+        cSES.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cSES.setText("Valores");
+
+        titulo7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        titulo7.setText("Costo con Espera:");
+
+        titulo8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        titulo8.setText("Costo sin Espera:");
+
+        titulo9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        titulo9.setText("Simulación Finalizada...");
 
         jMenu1.setText("Simulación");
 
-        jMenu3.setText("Iniciar");
+        jMenu3.setText("Selección de archivo");
         jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu3MouseClicked(evt);
@@ -148,54 +262,142 @@ public class Ventana extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(bAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(titulo)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(insertDias, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(nroQ, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(titulo2))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(titulo3)
-                                        .addComponent(nroR, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addContainerGap(44, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(titulo6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(titulo5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cInv, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(titulo8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cSES, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(5, 5, 5))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(titulo7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cEs, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(titulo4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(inv, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(nroQ, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(titulo2, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(titulo9)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(titulo3)
+                                    .addComponent(nroR, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(insertDias, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18)
+                        .addComponent(bAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSeparator1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(titulo2)
-                    .addComponent(titulo3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nroQ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nroR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(titulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(insertDias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(bAceptar)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(titulo9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(titulo2)
+                                    .addGap(0, 0, 0)
+                                    .addComponent(nroQ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(titulo3)
+                                    .addGap(0, 0, 0)
+                                    .addComponent(nroR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(titulo)
+                                .addGap(2, 2, 2)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(insertDias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(bAceptar))))
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(titulo7)
+                                    .addComponent(cEs, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(14, 14, 14)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(titulo8)
+                                    .addComponent(cSES, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(titulo4)
+                                    .addComponent(inv, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(titulo5)
+                                    .addComponent(cInv, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(titulo6)
+                                    .addComponent(cOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
-        //Limpiamos el titulo del Label
-        titulo.setText("");
-        //Creamos el objeto JFileChooser
+        //Creamos los objetos
+        DefaultTableModel modelDem = (DefaultTableModel) tablaDem.getModel();
+        DefaultTableModel modelEs = (DefaultTableModel) tablaEspera.getModel();
+        DefaultTableModel modelEn = (DefaultTableModel) tablaEntrega.getModel();
         JFileChooser fc=new JFileChooser();
+        
+        //Limpiamos las variables
+        titulo9.setText("");
+        insertDias.setText("");
+        nroQ.setText("");
+        nroR.setText("");
+        inv.setText("");
+        cInv.setText("");
+        cOrden.setText("");
+        cEs.setText("");
+        cSES.setText("");
+        modelDem.setRowCount(0);
+        modelEs.setRowCount(0);
+        modelEn.setRowCount(0);
 
         //Abrimos la ventana, guardamos la opcion seleccionada por el usuario
         int seleccion=fc.showOpenDialog(contentPane);
@@ -212,24 +414,57 @@ public class Ventana extends javax.swing.JFrame {
                 File file = new File(this.getDireccion());
                 JAXBContext jaxbContext;
                 jaxbContext = JAXBContext.newInstance(Archivo.class);
-
                 Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
                 objeto = (Archivo) jaxbUnmarshaller.unmarshal(file);
                 
+                double valDem = 0.0;
+                int nroDem = 0;
+                System.out.println("Size: "+objeto.getDemanda().size());
+                for (int i=0; i<objeto.getDemanda().size(); i++){
+                    nroDem = Integer.parseInt(objeto.getDemanda().get(i).split("-")[0]);
+                    valDem = Double.parseDouble(objeto.getDemanda().get(i).split("-")[1]);
+                    modelDem.addRow(new Object[]{nroDem, valDem});
+                }
+                for (int i=0; i<objeto.getTiempoEspera().size(); i++){
+                    nroDem = Integer.parseInt(objeto.getTiempoEspera().get(i).split("-")[0]);
+                    valDem = Double.parseDouble(objeto.getTiempoEspera().get(i).split("-")[1]);
+                    modelEs.addRow(new Object[]{nroDem, valDem});
+                }
+                for (int i=0; i<objeto.getTiempoEntrega().size(); i++){
+                    nroDem = Integer.parseInt(objeto.getTiempoEntrega().get(i).split("-")[0]);
+                    valDem = Double.parseDouble(objeto.getTiempoEntrega().get(i).split("-")[1]);
+                    modelEn.addRow(new Object[]{nroDem, valDem});
+                }
+                tablaDem.setVisible(true);
+                tablaEspera.setVisible(true);
+                tablaEntrega.setVisible(true);
                 if (objeto.getNroAleatorioDemanda()!=null &&  objeto.getNroAleatorioEntrega()!=null && objeto.getNroAleatorioEspera()!=null){
-                    titulo.setText("Nro. de días de simulación: ");
+                    inv.setText(objeto.getInvInicial()+" unid");
+                    cInv.setText(objeto.getCostoInv()+"");
+                    cOrden.setText(objeto.getCostoOrden()+"");
+                    cEs.setText(objeto.getCostoEspera()+"");
+                    cSES.setText(objeto.getCostoSinEspera()+"");
                     titulo.setVisible(true);
                     titulo2.setVisible(true);
                     titulo3.setVisible(true);
+                    titulo4.setVisible(true);
+                    titulo5.setVisible(true);
+                    titulo6.setVisible(true);
+                    titulo7.setVisible(true);
+                    titulo8.setVisible(true);
                     nroQ.setVisible(true);
                     nroR.setVisible(true);
                     insertDias.setVisible(true);
                     bAceptar.setVisible(true);
+                    inv.setVisible(true);
+                    cInv.setVisible(true);
+                    cOrden.setVisible(true);
+                    cEs.setVisible(true);
+                    cSES.setVisible(true);
+                            
                 }else{
                     try {
                         ejecucion.iniciarSim(objeto, 365,0,0);
-                        titulo.setText("Simulación Finalizada...");
-                        titulo.setVisible(true);
                     } catch (IOException ex) {
                         Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -262,8 +497,8 @@ public class Ventana extends javax.swing.JFrame {
                 nroR.setVisible(false);
                 insertDias.setVisible(false);
                 ejecucion.iniciarSim(objeto, Integer.parseInt(insertDias.getText()), Integer.parseInt(nroQ.getText()), Integer.parseInt(nroR.getText()));
-                titulo.setText("Simulación Finalizada...");
-                titulo.setVisible(true);
+                titulo9.setText("Simulación Finalizada...");
+                titulo9.setVisible(true);
             } catch (IOException ex) {
                 Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
             } catch (WriteException ex) {
@@ -326,15 +561,33 @@ public class Ventana extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAceptar;
+    private javax.swing.JLabel cEs;
+    private javax.swing.JLabel cInv;
+    private javax.swing.JLabel cOrden;
+    private javax.swing.JLabel cSES;
     private javax.swing.JTextField insertDias;
+    private javax.swing.JLabel inv;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField nroQ;
     private javax.swing.JTextField nroR;
+    private javax.swing.JTable tablaDem;
+    private javax.swing.JTable tablaEntrega;
+    private javax.swing.JTable tablaEspera;
     private javax.swing.JLabel titulo;
     private javax.swing.JLabel titulo2;
     private javax.swing.JLabel titulo3;
+    private javax.swing.JLabel titulo4;
+    private javax.swing.JLabel titulo5;
+    private javax.swing.JLabel titulo6;
+    private javax.swing.JLabel titulo7;
+    private javax.swing.JLabel titulo8;
+    private javax.swing.JLabel titulo9;
     // End of variables declaration//GEN-END:variables
 }

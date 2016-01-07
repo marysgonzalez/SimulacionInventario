@@ -295,8 +295,8 @@ public class Simulacion{
     return cellFormat;
     }
     
-    private void formatoArchivo(WritableSheet hojaTrabajo) throws WriteException{
-        Label[] titulos = new Label[23];
+    private void titulosArchivo(WritableSheet hojaTrabajo) throws WriteException{
+        Label[] titulos = new Label[22];
         titulos[0] = new Label(0,0,"Dia",getCellFormat(jxl.format.Colour.GREEN));
         titulos[1] = new Label(1,0,"Inv. Inicial",getCellFormat(jxl.format.Colour.GREEN));
         titulos[2] = new Label(2,0,"Nro. Alea. Dem.",getCellFormat(jxl.format.Colour.GREEN));
@@ -309,10 +309,10 @@ public class Simulacion{
         titulos[9] = new Label(9,0,"Tiempo Entrega",getCellFormat(jxl.format.Colour.GREEN));
         titulos[10] = new Label(10,0,"Nro. Alea. T_Espera",getCellFormat(jxl.format.Colour.GREEN));
         titulos[11] = new Label(11,0,"Tiempo Espera",getCellFormat(jxl.format.Colour.GREEN));
-        titulos[12] = new Label(12,0,"Costo de Inventario",getCellFormat(jxl.format.Colour.GREEN));
-        titulos[13] = new Label(13,0,"Costo Faltante",getCellFormat(jxl.format.Colour.GREEN));
-        titulos[14] = new Label(14,0,"Costo de Orden",getCellFormat(jxl.format.Colour.GREEN));
-        titulos[15] = new Label(15,0,"Costo Total",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[12] = new Label(14,0,"Costo de Inventario",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[13] = new Label(15,0,"Costo Faltante",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[14] = new Label(16,0,"Costo de Orden",getCellFormat(jxl.format.Colour.GREEN));
+        titulos[15] = new Label(17,0,"Costo Total",getCellFormat(jxl.format.Colour.GREEN));
 
         titulos[16] = new Label(0,diaSimulacion+4,"Costo de Inventario", getCellFormat(null));
         titulos[17] = new Label(0,diaSimulacion+5,"Costo Faltante", getCellFormat(null));
