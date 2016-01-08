@@ -78,12 +78,18 @@ public class Ventana extends javax.swing.JFrame {
         cOrden.setVisible(false);
         cEs.setVisible(false);
         cSES.setVisible(false);
-        
-        getContentPane().setBackground(new Color(175,169,201));
+
+        //getContentPane().setBackground(new Color(175,169,201));
         Image icono = new ImageIcon(filePath + File.separator + "src" + File.separator + "interfaz" + File.separator + "icono.png").getImage();
+        ImageIcon fondo = new ImageIcon(filePath + File.separator + "src" + File.separator + "interfaz" + File.separator + "fondo3.jpg");
+        labelFondo.setText("");
+        labelFondo.setIcon(fondo);
+        labelFondo.setVisible(true);
+        this.add(labelFondo);
         this.setIconImage(icono);
         this.setTitle("Simulación de Inventario");
         this.setLocation(30, 30);
+        this.setBounds(30, 30, 980, 420);
         this.setVisible(true);
     }
 
@@ -121,6 +127,7 @@ public class Ventana extends javax.swing.JFrame {
         titulo8 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         titulo9 = new javax.swing.JLabel();
+        labelFondo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -128,9 +135,15 @@ public class Ventana extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(93, 145, 255));
+        setResizable(false);
+        getContentPane().setLayout(null);
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         titulo.setText("Nro. de días de simulación:");
+        getContentPane().add(titulo);
+        titulo.setBounds(707, 46, 162, 15);
+        getContentPane().add(insertDias);
+        insertDias.setBounds(707, 64, 162, 30);
 
         bAceptar.setText("Iniciar");
         bAceptar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -138,12 +151,22 @@ public class Ventana extends javax.swing.JFrame {
                 bAceptarMouseClicked(evt);
             }
         });
+        getContentPane().add(bAceptar);
+        bAceptar.setBounds(887, 63, 85, 30);
+        getContentPane().add(nroQ);
+        nroQ.setBounds(483, 61, 90, 30);
+        getContentPane().add(nroR);
+        nroR.setBounds(591, 61, 90, 30);
 
         titulo2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         titulo2.setText("Cant. Orden: ");
+        getContentPane().add(titulo2);
+        titulo2.setBounds(483, 46, 82, 15);
 
         titulo3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         titulo3.setText("Punto Reorden:");
+        getContentPane().add(titulo3);
+        titulo3.setBounds(591, 46, 98, 15);
 
         tablaEspera.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tablaEspera.setModel(new javax.swing.table.DefaultTableModel(
@@ -164,6 +187,9 @@ public class Ventana extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tablaEspera);
 
+        getContentPane().add(jScrollPane2);
+        jScrollPane2.setBounds(326, 115, 300, 237);
+
         tablaDem.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tablaDem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -182,6 +208,9 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(tablaDem);
+
+        getContentPane().add(jScrollPane3);
+        jScrollPane3.setBounds(10, 115, 280, 237);
 
         tablaEntrega.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tablaEntrega.setModel(new javax.swing.table.DefaultTableModel(
@@ -202,38 +231,69 @@ public class Ventana extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(tablaEntrega);
 
+        getContentPane().add(jScrollPane4);
+        jScrollPane4.setBounds(662, 115, 310, 237);
+
         titulo4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         titulo4.setText("Inv. Inicial:");
+        getContentPane().add(titulo4);
+        titulo4.setBounds(10, 19, 67, 15);
 
         inv.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         inv.setText("Valores");
+        getContentPane().add(inv);
+        inv.setBounds(83, 19, 90, 15);
 
         titulo5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         titulo5.setText("Costo de Inventario:");
+        getContentPane().add(titulo5);
+        titulo5.setBounds(10, 45, 127, 15);
 
         cInv.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cInv.setText("Valores");
+        getContentPane().add(cInv);
+        cInv.setBounds(143, 45, 90, 15);
 
         titulo6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         titulo6.setText("Costo de Orden:");
+        getContentPane().add(titulo6);
+        titulo6.setBounds(10, 71, 100, 15);
 
         cOrden.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cOrden.setText("Valores");
+        getContentPane().add(cOrden);
+        cOrden.setBounds(116, 71, 90, 15);
 
         cEs.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cEs.setText("Valores");
+        getContentPane().add(cEs);
+        cEs.setBounds(355, 42, 90, 15);
 
         cSES.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cSES.setText("Valores");
+        getContentPane().add(cSES);
+        cSES.setBounds(350, 70, 90, 15);
 
         titulo7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         titulo7.setText("Costo con Espera:");
+        getContentPane().add(titulo7);
+        titulo7.setBounds(239, 42, 110, 15);
 
         titulo8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         titulo8.setText("Costo sin Espera:");
+        getContentPane().add(titulo8);
+        titulo8.setBounds(239, 71, 105, 15);
+        getContentPane().add(jSeparator1);
+        jSeparator1.setBounds(10, 104, 962, 10);
 
         titulo9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         titulo9.setText("Simulación Finalizada...");
+        getContentPane().add(titulo9);
+        titulo9.setBounds(591, 20, 139, 15);
+
+        labelFondo.setText("jLabel1");
+        getContentPane().add(labelFondo);
+        labelFondo.setBounds(0, 0, 980, 370);
 
         jMenu1.setText("Simulación");
 
@@ -257,124 +317,6 @@ public class Ventana extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(titulo6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(titulo5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cInv, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(titulo8)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cSES, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(5, 5, 5))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(titulo7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cEs, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(titulo4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(inv, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(nroQ, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(titulo2, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(titulo9)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(titulo3)
-                                    .addComponent(nroR, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(insertDias, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(18, 18, 18)
-                        .addComponent(bAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSeparator1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(titulo9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(titulo2)
-                                    .addGap(0, 0, 0)
-                                    .addComponent(nroQ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(titulo3)
-                                    .addGap(0, 0, 0)
-                                    .addComponent(nroR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(titulo)
-                                .addGap(2, 2, 2)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(insertDias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(bAceptar))))
-                        .addGap(18, 18, 18))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(titulo7)
-                                    .addComponent(cEs, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(14, 14, 14)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(titulo8)
-                                    .addComponent(cSES, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(titulo4)
-                                    .addComponent(inv, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(titulo5)
-                                    .addComponent(cInv, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(titulo6)
-                                    .addComponent(cOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17))
-        );
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -395,6 +337,7 @@ public class Ventana extends javax.swing.JFrame {
         cOrden.setText("");
         cEs.setText("");
         cSES.setText("");
+        bAceptar.setVisible(false);
         modelDem.setRowCount(0);
         modelEs.setRowCount(0);
         modelEn.setRowCount(0);
@@ -419,7 +362,7 @@ public class Ventana extends javax.swing.JFrame {
                 
                 double valDem = 0.0;
                 int nroDem = 0;
-                System.out.println("Size: "+objeto.getDemanda().size());
+
                 for (int i=0; i<objeto.getDemanda().size(); i++){
                     nroDem = Integer.parseInt(objeto.getDemanda().get(i).split("-")[0]);
                     valDem = Double.parseDouble(objeto.getDemanda().get(i).split("-")[1]);
@@ -460,18 +403,26 @@ public class Ventana extends javax.swing.JFrame {
                     cInv.setVisible(true);
                     cOrden.setVisible(true);
                     cEs.setVisible(true);
-                    cSES.setVisible(true);
-                            
+                    cSES.setVisible(true);      
                 }else{
-                    try {
-                        ejecucion.iniciarSim(objeto, 365,0,0);
-                    } catch (IOException ex) {
-                        Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    inv.setText(objeto.getInvInicial()+" unid");
+                    cInv.setText(objeto.getCostoInv()+"");
+                    cOrden.setText(objeto.getCostoOrden()+"");
+                    cEs.setText(objeto.getCostoEspera()+"");
+                    cSES.setText(objeto.getCostoSinEspera()+"");
+                    titulo4.setVisible(true);
+                    titulo5.setVisible(true);
+                    titulo6.setVisible(true);
+                    titulo7.setVisible(true);
+                    titulo8.setVisible(true);
+                    inv.setVisible(true);
+                    cInv.setVisible(true);
+                    cOrden.setVisible(true);
+                    cEs.setVisible(true);
+                    cSES.setVisible(true);
+                    bAceptar.setVisible(true);
                 }
             } catch (JAXBException ex) {
-                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (WriteException ex) {
                 Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else{
@@ -487,16 +438,90 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void bAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAceptarMouseClicked
-        if (validarCampos(nroQ.getText(), nroR.getText(), insertDias.getText()) == true){
+        if (nroQ.isVisible()){
+            if (validarCampos(nroQ.getText(), nroR.getText(), insertDias.getText()) == true){
+                try {
+                    titulo.setVisible(false);
+                    titulo2.setVisible(false);
+                    titulo3.setVisible(false);
+                    nroQ.setVisible(false);
+                    nroR.setVisible(false);
+                    insertDias.setVisible(false);
+                    if (ejecucion.iniciarSim(objeto, Integer.parseInt(insertDias.getText()), Integer.parseInt(nroQ.getText()), Integer.parseInt(nroR.getText())) == false){
+                        titulo.setVisible(true);
+                        titulo2.setVisible(true);
+                        titulo3.setVisible(true);
+                        titulo4.setVisible(true);
+                        titulo5.setVisible(true);
+                        titulo6.setVisible(true);
+                        titulo7.setVisible(true);
+                        titulo8.setVisible(true);
+                        titulo9.setVisible(false);
+                        nroQ.setText("");
+                        nroR.setText("");
+                        insertDias.setText("");
+                        bAceptar.setVisible(true);
+                        nroQ.setVisible(true);
+                        nroR.setVisible(true);
+                        insertDias.setVisible(true);
+                    }else{
+                        inv.setText(objeto.getInvInicial()+" unid");
+                        cInv.setText(objeto.getCostoInv()+"");
+                        cOrden.setText(objeto.getCostoOrden()+"");
+                        cEs.setText(objeto.getCostoEspera()+"");
+                        cSES.setText(objeto.getCostoSinEspera()+"");
+                        titulo.setVisible(true);
+                        titulo2.setVisible(true);
+                        titulo3.setVisible(true);
+                        titulo4.setVisible(true);
+                        titulo5.setVisible(true);
+                        titulo6.setVisible(true);
+                        titulo7.setVisible(true);
+                        titulo8.setVisible(true);
+                        nroQ.setText("");
+                        nroR.setText("");
+                        insertDias.setText("");
+                        bAceptar.setVisible(true);
+                        nroQ.setVisible(true);
+                        nroR.setVisible(true);
+                        insertDias.setVisible(true);
+                        inv.setVisible(true);
+                        cInv.setVisible(true);
+                        cOrden.setVisible(true);
+                        cEs.setVisible(true);
+                        cSES.setVisible(true);
+                        bAceptar.setVisible(true);
+                    }
+
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (WriteException ex) {
+                    Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+                JOptionPane.showMessageDialog(this, "Error: Los campos deben ser numéricos.");
+            }
+            
+        }else{
             try {
-                bAceptar.setVisible(false);
-                titulo.setVisible(false);
-                titulo2.setVisible(false);
-                titulo3.setVisible(false);
-                nroQ.setVisible(false);
-                nroR.setVisible(false);
-                insertDias.setVisible(false);
-                ejecucion.iniciarSim(objeto, Integer.parseInt(insertDias.getText()), Integer.parseInt(nroQ.getText()), Integer.parseInt(nroR.getText()));
+                if (ejecucion.iniciarSim(objeto, 365,0,0) == false){
+                    inv.setText("");
+                    cInv.setText("");
+                    cOrden.setText("");
+                    cEs.setText("");
+                    cSES.setText("");
+                    titulo4.setVisible(false);
+                    titulo5.setVisible(false);
+                    titulo6.setVisible(false);
+                    titulo7.setVisible(false);
+                    titulo8.setVisible(false);
+                    inv.setVisible(false);
+                    cInv.setVisible(false);
+                    cOrden.setVisible(false);
+                    cEs.setVisible(false);
+                    cSES.setVisible(false);
+                }
                 titulo9.setText("Simulación Finalizada...");
                 titulo9.setVisible(true);
             } catch (IOException ex) {
@@ -504,9 +529,8 @@ public class Ventana extends javax.swing.JFrame {
             } catch (WriteException ex) {
                 Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else{
-            JOptionPane.showMessageDialog(this, "Error: Los campos deben ser numéricos.");
         }
+        
     }//GEN-LAST:event_bAceptarMouseClicked
 
     private boolean validarCampos(String campo1, String campo2, String campo3){
@@ -575,6 +599,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel labelFondo;
     private javax.swing.JTextField nroQ;
     private javax.swing.JTextField nroR;
     private javax.swing.JTable tablaDem;
