@@ -82,6 +82,8 @@ public class Ventana extends javax.swing.JFrame {
         //getContentPane().setBackground(new Color(175,169,201));
         Image icono = new ImageIcon(filePath + File.separator + "src" + File.separator + "interfaz" + File.separator + "icono.png").getImage();
         ImageIcon fondo = new ImageIcon(filePath + File.separator + "src" + File.separator + "interfaz" + File.separator + "fondo3.jpg");
+//        ImageIcon fondo = new ImageIcon(getClass().getResourceAsStream(filePath + File.separator + "src" + File.separator + "interfaz" + File.separator + "fondo3.jpg"));
+        
         labelFondo.setText("");
         labelFondo.setIcon(fondo);
         labelFondo.setVisible(true);
@@ -382,45 +384,21 @@ public class Ventana extends javax.swing.JFrame {
                 tablaEspera.setVisible(true);
                 tablaEntrega.setVisible(true);
                 if (objeto.getNroAleatorioDemanda()!=null &&  objeto.getNroAleatorioEntrega()!=null && objeto.getNroAleatorioEspera()!=null){
-                    inv.setText(objeto.getInvInicial()+" unid");
-                    cInv.setText(objeto.getCostoInv()+"");
-                    cOrden.setText(objeto.getCostoOrden()+"");
-                    cEs.setText(objeto.getCostoEspera()+"");
-                    cSES.setText(objeto.getCostoSinEspera()+"");
+                    this.mostrarElementos(true);
                     titulo.setVisible(true);
                     titulo2.setVisible(true);
                     titulo3.setVisible(true);
-                    titulo4.setVisible(true);
-                    titulo5.setVisible(true);
-                    titulo6.setVisible(true);
-                    titulo7.setVisible(true);
-                    titulo8.setVisible(true);
                     nroQ.setVisible(true);
                     nroR.setVisible(true);
-                    insertDias.setVisible(true);
-                    bAceptar.setVisible(true);
-                    inv.setVisible(true);
-                    cInv.setVisible(true);
-                    cOrden.setVisible(true);
-                    cEs.setVisible(true);
-                    cSES.setVisible(true);      
+                    insertDias.setVisible(true);    
                 }else{
-                    inv.setText(objeto.getInvInicial()+" unid");
-                    cInv.setText(objeto.getCostoInv()+"");
-                    cOrden.setText(objeto.getCostoOrden()+"");
-                    cEs.setText(objeto.getCostoEspera()+"");
-                    cSES.setText(objeto.getCostoSinEspera()+"");
-                    titulo4.setVisible(true);
-                    titulo5.setVisible(true);
-                    titulo6.setVisible(true);
-                    titulo7.setVisible(true);
-                    titulo8.setVisible(true);
-                    inv.setVisible(true);
-                    cInv.setVisible(true);
-                    cOrden.setVisible(true);
-                    cEs.setVisible(true);
-                    cSES.setVisible(true);
-                    bAceptar.setVisible(true);
+                    titulo.setVisible(false);
+                    titulo2.setVisible(false);
+                    titulo3.setVisible(false);
+                    nroQ.setVisible(false);
+                    nroR.setVisible(false);
+                    insertDias.setVisible(false); 
+                    this.mostrarElementos(true);
                 }
             } catch (JAXBException ex) {
                 Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
@@ -464,33 +442,20 @@ public class Ventana extends javax.swing.JFrame {
                         nroQ.setVisible(true);
                         nroR.setVisible(true);
                         insertDias.setVisible(true);
+                        JOptionPane.showMessageDialog(this, "Números aleatorios insuficientes en el archivo. La cantidad de aleatorios debe corresponder a los dias de simulación.");
+                    
                     }else{
-                        inv.setText(objeto.getInvInicial()+" unid");
-                        cInv.setText(objeto.getCostoInv()+"");
-                        cOrden.setText(objeto.getCostoOrden()+"");
-                        cEs.setText(objeto.getCostoEspera()+"");
-                        cSES.setText(objeto.getCostoSinEspera()+"");
+                        this.mostrarElementos(true);
                         titulo.setVisible(true);
                         titulo2.setVisible(true);
                         titulo3.setVisible(true);
-                        titulo4.setVisible(true);
-                        titulo5.setVisible(true);
-                        titulo6.setVisible(true);
-                        titulo7.setVisible(true);
-                        titulo8.setVisible(true);
                         nroQ.setText("");
                         nroR.setText("");
                         insertDias.setText("");
-                        bAceptar.setVisible(true);
                         nroQ.setVisible(true);
                         nroR.setVisible(true);
                         insertDias.setVisible(true);
-                        inv.setVisible(true);
-                        cInv.setVisible(true);
-                        cOrden.setVisible(true);
-                        cEs.setVisible(true);
-                        cSES.setVisible(true);
-                        bAceptar.setVisible(true);
+                        
                     }
 
                     
@@ -547,6 +512,24 @@ public class Ventana extends javax.swing.JFrame {
         return true;
     }
     
+    private void mostrarElementos(boolean condicion){
+        inv.setText(objeto.getInvInicial()+" unid");
+        cInv.setText(objeto.getCostoInv()+"");
+        cOrden.setText(objeto.getCostoOrden()+"");
+        cEs.setText(objeto.getCostoEspera()+"");
+        cSES.setText(objeto.getCostoSinEspera()+"");
+        titulo4.setVisible(condicion);
+        titulo5.setVisible(condicion);
+        titulo6.setVisible(condicion);
+        titulo7.setVisible(condicion);
+        titulo8.setVisible(condicion);
+        inv.setVisible(condicion);
+        cInv.setVisible(condicion);
+        cOrden.setVisible(condicion);
+        cEs.setVisible(condicion);
+        cSES.setVisible(condicion);
+        bAceptar.setVisible(condicion);
+    }
     /**
      * @param args the command line arguments
      */

@@ -38,7 +38,7 @@ public class Simulacion{
         tEspera = new ArrayList <Tabla>();
         int datos[] = new int[2];
         int MaxQ = 0, qMin = 0;
-        int MaxPR = 0, rMin = 0, flag=0;
+        int MaxPR = 0, rMin = 0;
         Double tCosto = 0.0;
         String filePath = new File("").getAbsolutePath();
         String ruta = "";
@@ -69,8 +69,6 @@ public class Simulacion{
             if(alDemanda!=null && alEntrega!=null && alEspera!=null){
                 
                 if(alDemanda.size() < diaSim || alEspera.size() < diaSim || alEntrega.size()< diaSim){
-                    flag = 1;
-                    JOptionPane.showMessageDialog(null, "Números aleatorios insuficientes en el archivo. La cantidad de aleatorios debe corresponder a los dias de simulación.");
                     return false;
                 }else{
 
@@ -262,7 +260,7 @@ public class Simulacion{
                 excel.close();
             }
             
-            if(archivo.exists() && !archivo.isDirectory() && flag==0) { 
+            if(archivo.exists() && !archivo.isDirectory()) { 
                 Desktop dt = Desktop.getDesktop();
                 dt.open(new File(ruta));
             }
